@@ -27,6 +27,10 @@ kotlin {
 
             //SqlDelight
             implementation(libs.sqldelight.driver.android)
+
+            //Fonts
+            implementation("androidx.compose.ui:ui-text-google-fonts:1.7.6")
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
