@@ -1,0 +1,57 @@
+package com.guilherme.wheretowatch.presentation.components
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.guilherme.wheretowatch.navigation.BookmarkedMoviesScreen
+import com.guilherme.wheretowatch.navigation.BottomNavigationItem
+import com.guilherme.wheretowatch.navigation.HomeScreen
+
+@Composable
+fun BottomNavigationBar(navController: NavHostController) {
+    val route = navController.currentBackStackEntryAsState().value?.destination?.route
+
+    val items = listOf(
+        BottomNavigationItem(
+            label = "Home",
+            selectedIcon = Icons.Filled.Home,
+            unselectedIcon = Icons.Outlined.Home,
+            route = "com.guilherme.wheretowatch.navigation.HomeScreen",
+            onClick = { navController.navigate(HomeScreen) }
+        ),
+        BottomNavigationItem(
+            label = "Bookmarked Movies",
+            selectedIcon = Icons.Filled.Favorite,
+            unselectedIcon = Icons.Outlined.Favorite,
+            route = "com.guilherme.wheretowatch.navigation.BookmarkedMoviesScreen",
+            onClick = { navController.navigate(BookmarkedMoviesScreen) }
+        )
+    )
+
+    NavigationBar {
+        items.forEachIndexed { index, item ->
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        if (route == item.route) item.selectedIcon else item.unselectedIcon,
+                        contentDescription = item.label
+                    )
+                },
+                alwaysShowLabel = false,
+                label = { Text(item.label) },
+                selected = route == item.route,
+                onClick = item.onClick
+            )
+        }
+    }
+
+}
