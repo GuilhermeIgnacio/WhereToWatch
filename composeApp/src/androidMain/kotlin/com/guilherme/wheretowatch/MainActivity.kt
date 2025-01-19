@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.guilherme.wheretowatch.di.appModule
+import org.koin.compose.KoinApplication
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,9 +17,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            App(
-                navController = rememberNavController()
-            )
+            KoinApplication(
+                application = {
+                    modules(appModule)
+                }
+            ) {
+                App(
+                    navController = rememberNavController()
+                )
+            }
         }
     }
 }
