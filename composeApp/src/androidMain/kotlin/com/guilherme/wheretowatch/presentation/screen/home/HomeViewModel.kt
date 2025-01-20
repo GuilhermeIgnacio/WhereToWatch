@@ -11,7 +11,7 @@ class HomeViewModel(
 
     fun lorem() {
         viewModelScope.launch {
-            tmdbApiService.fetchMovies()
+            println(tmdbApiService.fetchMovies())
         }
     }
 

@@ -12,5 +12,9 @@ fun HomeScreen() {
 
     val viewModel = koinViewModel<HomeViewModel>()
     Text(text = "Lorem")
+    Button(
+        modifier = Modifier.statusBarsPadding(),
+        onClick = {viewModel.lorem()}
+    ) { }
 
 }
