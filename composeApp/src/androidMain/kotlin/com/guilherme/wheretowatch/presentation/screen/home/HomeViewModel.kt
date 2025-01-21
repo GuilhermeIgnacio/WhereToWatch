@@ -12,8 +12,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class HomeState(
-    val apiResponse: List<MovieData> = emptyList()
+    val apiResponse: List<MovieData> = emptyList(),
+    val searchQuery: String = ""
 )
+
+sealed interface HomeEvents {
+    data class OnQueryChange(val value: String): HomeEvents
+}
 
 class HomeViewModel(
     private val tmdbApiService: TheMovieDatabaseApiService
@@ -49,6 +54,14 @@ class HomeViewModel(
                         ResponseError.UNKNOWN -> TODO()
                     }
                 }
+            }
+        }
+    }
+
+    fun onEvent(event: HomeEvents) {
+        when(event) {
+            is HomeEvents.OnQueryChange -> {
+                _state.update { it.copy(searchQuery = event.value) }
             }
         }
     }
