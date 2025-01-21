@@ -1,5 +1,7 @@
 package com.guilherme.wheretowatch.data.remote.api
 
+import com.guilherme.wheretowatch.domain.ResponseError
+import com.guilherme.wheretowatch.domain.Result
 import com.guilherme.wheretowatch.domain.TheMovieDatabaseApiService
 import com.guilherme.wheretowatch.domain.model.ApiResponse
 import io.ktor.client.HttpClient
@@ -21,7 +23,7 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
         const val POPULAR_MOVIES_ENDPOINT = "https://api.themoviedb.org/3/movie/popular"
     }
 
-    override suspend fun fetchMovies(): ApiResponse? {
+    override suspend fun fetchMovies(): Result<ApiResponse, ResponseError> {
         val client = HttpClient(CIO) {
             install(ContentNegotiation) {
                 json(
@@ -44,11 +46,25 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
 
         return try {
             val response = client.get(POPULAR_MOVIES_ENDPOINT)
-            response.body<ApiResponse>()
+
+            when(response.status.value) {
+                200 -> Result.Success(response.body<ApiResponse>())
+                400 -> Result.Error(ResponseError.BAD_REQUEST)
+                401 -> Result.Error(ResponseError.UNAUTHORIZED)
+                403 -> Result.Error(ResponseError.FORBIDDEN)
+                404 -> Result.Error(ResponseError.NOT_FOUND)
+                405 -> Result.Error(ResponseError.METHOD_NOT_ALLOWED)
+                408 -> Result.Error(ResponseError.REQUEST_TIMEOUT)
+                429 -> Result.Error(ResponseError.TOO_MANY_REQUESTS)
+                else -> {
+                    println("Http Status Value -> ${response.status.value}")
+                    Result.Error(ResponseError.UNKNOWN)
+                }
+            }
 
         } catch (e: Exception) {
             e.printStackTrace()
-            null
+            Result.Error(ResponseError.UNKNOWN)
         }
 
     }
