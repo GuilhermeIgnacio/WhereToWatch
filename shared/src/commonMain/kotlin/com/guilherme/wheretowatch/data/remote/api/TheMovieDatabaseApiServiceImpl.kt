@@ -1,5 +1,7 @@
 package com.guilherme.wheretowatch.data.remote.api
 
+import androidx.compose.ui.text.intl.Locale
+import com.guilherme.wheretowatch.API_KEY
 import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.domain.Result
 import com.guilherme.wheretowatch.domain.TheMovieDatabaseApiService
@@ -17,10 +19,9 @@ import kotlinx.serialization.json.Json
 
 class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
 
-    //Todo: DO NOT COMMIT THIS VAL
     companion object {
-        const val API_KEY = ""
-        const val POPULAR_MOVIES_ENDPOINT = "https://api.themoviedb.org/3/movie/popular"
+        const val POPULAR_MOVIES_ENDPOINT = "https://api.themoviedb.org/3/movie/popular?language="
+        val languageTag = Locale.current.toLanguageTag()
     }
 
     override suspend fun fetchMovies(): Result<ApiResponse, ResponseError> {
@@ -45,7 +46,7 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
         }
 
         return try {
-            val response = client.get(POPULAR_MOVIES_ENDPOINT)
+            val response = client.get(POPULAR_MOVIES_ENDPOINT + languageTag)
 
             when(response.status.value) {
                 200 -> Result.Success(response.body<ApiResponse>())

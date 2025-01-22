@@ -27,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -53,7 +54,7 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
             SearchBar(
@@ -96,12 +97,12 @@ fun HomeScreen(
                     AsyncImage(
                         modifier = Modifier
                             .width(240.dp)
-                            .height(333.dp)
                             .weight(1f)
                             .clip(RoundedCornerShape(16.dp))
                             .clickable { onMovieClick(movie.id) },
                         model = "https://image.tmdb.org/t/p/w500" + movie.posterPath,
                         contentDescription = "",
+                        contentScale = ContentScale.FillWidth
                     )
                 }
 
