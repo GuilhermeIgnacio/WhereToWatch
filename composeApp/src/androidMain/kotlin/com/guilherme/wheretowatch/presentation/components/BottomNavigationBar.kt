@@ -1,5 +1,12 @@
 package com.guilherme.wheretowatch.presentation.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -37,21 +44,37 @@ fun BottomNavigationBar(navController: NavHostController) {
         )
     )
 
-    NavigationBar {
-        items.forEachIndexed { index, item ->
-            NavigationBarItem(
-                icon = {
-                    Icon(
-                        if (route == item.route) item.selectedIcon else item.unselectedIcon,
-                        contentDescription = item.label
-                    )
-                },
-                alwaysShowLabel = false,
-                label = { Text(item.label) },
-                selected = route == item.route,
-                onClick = item.onClick
-            )
+    AnimatedVisibility(
+        visible = route == items[0].route && route != items[1].route,
+        enter = fadeIn(animationSpec = tween(delayMillis = 200)) +
+                slideInVertically(
+                    initialOffsetY = { it },
+                    animationSpec = tween(delayMillis = 200)
+                ),
+        exit = fadeOut(animationSpec = tween(delayMillis = 200)) +
+                slideOutVertically(
+                    targetOffsetY = { it },
+                    animationSpec = tween(delayMillis = 200)
+                )
+
+    ) {
+        NavigationBar {
+            items.forEachIndexed { index, item ->
+                NavigationBarItem(
+                    icon = {
+                        Icon(
+                            if (route == item.route) item.selectedIcon else item.unselectedIcon,
+                            contentDescription = item.label
+                        )
+                    },
+                    alwaysShowLabel = false,
+                    label = { Text(item.label) },
+                    selected = route == item.route,
+                    onClick = item.onClick
+                )
+            }
         }
     }
+
 
 }

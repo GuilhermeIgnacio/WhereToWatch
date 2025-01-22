@@ -7,13 +7,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.guilherme.wheretowatch.presentation.components.BottomNavigationBar
 import com.guilherme.wheretowatch.presentation.screen.home.HomeScreen
+import com.guilherme.wheretowatch.presentation.screen.moviedetails.MovieDetailsScreen
 import kotlinx.serialization.Serializable
 
 @Composable
 fun SetupNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
 
     Scaffold(
@@ -27,11 +29,18 @@ fun SetupNavGraph(
             startDestination = HomeScreen
         ) {
             composable<HomeScreen> {
-                HomeScreen()
+                HomeScreen(
+                    onMovieClick = { navController.navigate(MovieDetailsScreen(id = it)) }
+                )
             }
 
             composable<BookmarkedMoviesScreen> {
                 Text("Bookmarked Movies Screen")
+            }
+
+            composable<MovieDetailsScreen> {
+                val args = it.toRoute<MovieDetailsScreen>()
+                MovieDetailsScreen(movieId = args.id)
             }
 
         }
@@ -45,10 +54,13 @@ object HomeScreen
 @Serializable
 object BookmarkedMoviesScreen
 
+@Serializable
+data class MovieDetailsScreen(val id: Int)
+
 data class BottomNavigationItem(
     val label: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
     val route: String,
-    val onClick: () -> Unit
+    val onClick: () -> Unit,
 )

@@ -19,7 +19,7 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
 
     //Todo: DO NOT COMMIT THIS VAL
     companion object {
-        const val API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3NTJmMGIxYTY5MjdjMTVmZjEzZGVlMjEzMTFhZDlmZiIsIm5iZiI6MTY4MzY4MTMwMy45NzUwMDAxLCJzdWIiOiI2NDVhZjAxNzc3ZDIzYjAwZmNjYmQxNDciLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.jEZ4zRmpGHuM5T-MjKdgWw15TI_nf4u21nqMTP9Ajrc"
+        const val API_KEY = ""
         const val POPULAR_MOVIES_ENDPOINT = "https://api.themoviedb.org/3/movie/popular"
     }
 

@@ -32,12 +32,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
 import com.guilherme.wheretowatch.R
+import com.guilherme.wheretowatch.domain.model.MovieData
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onMovieClick: (Int) -> Unit
+) {
 
     val viewModel = koinViewModel<HomeViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -73,7 +77,7 @@ fun HomeScreen() {
 
         item {
             Text(
-                text = "Popular Movies",
+                text = stringResource(R.string.popular_movies),
                 fontSize = MaterialTheme.typography.headlineLarge.fontSize,
                 fontWeight = FontWeight.Bold
             )
@@ -95,7 +99,7 @@ fun HomeScreen() {
                             .height(333.dp)
                             .weight(1f)
                             .clip(RoundedCornerShape(16.dp))
-                            .clickable { },
+                            .clickable { onMovieClick(movie.id) },
                         model = "https://image.tmdb.org/t/p/w500" + movie.posterPath,
                         contentDescription = "",
                     )
