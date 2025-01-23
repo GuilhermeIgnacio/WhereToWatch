@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,8 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,7 +35,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.guilherme.wheretowatch.R
-import com.guilherme.wheretowatch.domain.model.MovieData
+import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
+import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieDurationSection
+import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieRateSection
+import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieReleaseDateSection
 import org.koin.compose.viewmodel.koinViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -78,7 +77,7 @@ fun MovieDetailsScreen(
                         ),
                     contentScale = ContentScale.FillWidth,
                     model = "https://image.tmdb.org/t/p/original" + movie.posterPath,
-                    contentDescription = movie.title + " Poster",
+                    contentDescription = "${movie.title} Poster",
                 )
 
                 IconButton(
@@ -123,65 +122,11 @@ fun MovieDetailsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                Column {
+                MovieReleaseDateSection(movie)
 
-                    val date = LocalDate.parse(movie.releaseDate)
+                MovieRateSection(movie)
 
-                    val locale = Locale.current.platformLocale
-
-                    val pattern = when (locale.country) {
-                        "US" -> "MM/dd/yyyy"
-                        else -> "dd/MM/yyyy"
-                    }
-
-                    val formatter = DateTimeFormatter.ofPattern(pattern)
-
-                    val formattedDate = date.format(formatter)
-
-                    Text(
-                        text = stringResource(R.string.release_date),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                    )
-
-                    Text(
-                        text = formattedDate,
-                        fontWeight = FontWeight.ExtraLight,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                    )
-                }
-
-                Column {
-
-                    val formattedVoteAverage = "%.1f".format(movie.voteAverage)
-
-                    Text(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        text = "$formattedVoteAverage ⭐",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                    )
-
-                    Text(
-                        text = stringResource(R.string.vote_average, movie.voteCount),
-                        fontWeight = FontWeight.ExtraLight,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                    )
-                }
-
-                Column {
-                    Text(
-                        text = stringResource(R.string.duration_time),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                    )
-
-                    Text(
-                        text = stringResource(R.string.minutes, movie.runtime),
-                        fontWeight = FontWeight.ExtraLight,
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                    )
-                }
+                MovieDurationSection(movie)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
