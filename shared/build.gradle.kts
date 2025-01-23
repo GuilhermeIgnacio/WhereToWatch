@@ -51,6 +51,10 @@ kotlin {
 
             //Serialization
             implementation(libs.serialization.json)
+
+            //Material icons extended
+            implementation(libs.material.icons.extended)
+
         }
     }
 }

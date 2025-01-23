@@ -66,6 +66,9 @@ kotlin {
             //Coil
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
+
+            //Material Icons Extended
+            implementation(libs.material.icons.extended)
         }
     }
 }
