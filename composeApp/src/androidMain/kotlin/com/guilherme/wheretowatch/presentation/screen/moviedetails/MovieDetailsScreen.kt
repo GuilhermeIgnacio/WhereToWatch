@@ -50,7 +50,10 @@ fun MovieDetailsScreen(
 ) {
 
     val viewModel = koinViewModel<MovieDetailsViewModel>()
-    LaunchedEffect(Unit) { viewModel.fetchMovieDetails(movieId) }
+    LaunchedEffect(Unit) {
+        viewModel.fetchMovieDetails(movieId)
+        viewModel.fetchMovieWatchProviders(movieId)
+    }
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val verticalScroll = rememberScrollState()

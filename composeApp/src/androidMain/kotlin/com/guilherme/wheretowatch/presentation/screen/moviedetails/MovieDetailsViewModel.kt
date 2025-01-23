@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.guilherme.wheretowatch.domain.Result
 import com.guilherme.wheretowatch.domain.TheMovieDatabaseApiService
 import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
+import com.guilherme.wheretowatch.domain.model.MovieWatchProvidersResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 
 data class MovieDetailsState(
     val movieDetails: MovieDetailsResponse? = null,
+    val movieWatchProviders: MovieWatchProvidersResponse? = null
 )
 
 class MovieDetailsViewModel(
@@ -28,6 +30,16 @@ class MovieDetailsViewModel(
             }
             is Result.Error -> TODO()
         }
+    }
+
+    suspend fun fetchMovieWatchProviders(id: Int) {
+        when(val result = tmdbApiService.fetchMovieProviders(id)) {
+            is Result.Success -> {
+                _state.update { it.copy(movieWatchProviders = result.data) }
+            }
+            is Result.Error -> TODO()
+        }
+
     }
 
 }
