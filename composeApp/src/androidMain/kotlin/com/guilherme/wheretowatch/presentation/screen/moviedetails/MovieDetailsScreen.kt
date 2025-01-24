@@ -53,7 +53,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @SuppressLint("NewApi")
 @Composable
 fun MovieDetailsScreen(
-    movieId: Int
+    movieId: Int,
+    onReturnNavigateButtonClicked: () -> Unit
 ) {
 
     val viewModel = koinViewModel<MovieDetailsViewModel>()
@@ -101,7 +102,7 @@ fun MovieDetailsScreen(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .statusBarsPadding(),
-                    onClick = { /* Todo: Navigate back to home screen */ }
+                    onClick = { onReturnNavigateButtonClicked() }
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,

@@ -40,7 +40,10 @@ fun SetupNavGraph(
 
             composable<MovieDetailsScreen> {
                 val args = it.toRoute<MovieDetailsScreen>()
-                MovieDetailsScreen(movieId = args.id)
+                MovieDetailsScreen(
+                    movieId = args.id,
+                    onReturnNavigateButtonClicked = { navController.navigate(HomeScreen) }
+                )
             }
 
         }
