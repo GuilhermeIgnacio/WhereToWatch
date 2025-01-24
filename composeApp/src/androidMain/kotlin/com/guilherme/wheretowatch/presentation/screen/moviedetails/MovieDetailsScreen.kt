@@ -33,12 +33,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.domain.model.Provider
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieDurationSection
@@ -49,7 +53,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @SuppressLint("NewApi")
 @Composable
 fun MovieDetailsScreen(
-    movieId: Int,
+    movieId: Int
 ) {
 
     val viewModel = koinViewModel<MovieDetailsViewModel>()
@@ -84,8 +88,13 @@ fun MovieDetailsScreen(
                             )
                         ),
                     contentScale = ContentScale.FillWidth,
-                    model = "https://image.tmdb.org/t/p/original" + movie.posterPath,
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data("https://image.tmdb.org/t/p/original" + movie.posterPath)
+                        .crossfade(true)
+                        .build(),
                     contentDescription = "${movie.title} Poster",
+                    placeholder = painterResource(R.drawable.frame_11),
+                    error = painterResource(R.drawable.frame_11)
                 )
 
                 IconButton(
@@ -203,9 +212,14 @@ private fun WatchProvidersSection(providerLabel: String, provider: List<Provider
                     modifier = Modifier
                         .clip(CircleShape)
                         .size(70.dp),
-                    model = "https://image.tmdb.org/t/p/original" + it.logoPath,
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data("https://image.tmdb.org/t/p/original" + it.logoPath)
+                        .crossfade(true)
+                        .build(),
                     contentDescription = it.providerName + "Logo",
-                    contentScale = ContentScale.Fit
+                    contentScale = ContentScale.FillWidth,
+                    placeholder = painterResource(R.drawable.frame_11),
+                    error = painterResource(R.drawable.frame_11)
                 )
             }
         }
