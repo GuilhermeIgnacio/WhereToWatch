@@ -2,8 +2,10 @@ package com.guilherme.wheretowatch.presentation.screen.moviedetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.domain.Result
 import com.guilherme.wheretowatch.domain.TheMovieDatabaseApiService
+import com.guilherme.wheretowatch.domain.model.Country
 import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
 import com.guilherme.wheretowatch.domain.model.MovieWatchProvidersResponse
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +15,7 @@ import kotlinx.coroutines.launch
 
 data class MovieDetailsState(
     val movieDetails: MovieDetailsResponse? = null,
-    val movieWatchProviders: MovieWatchProvidersResponse? = null
+    val movieWatchProviders: Country? = null
 )
 
 class MovieDetailsViewModel(
@@ -37,7 +39,19 @@ class MovieDetailsViewModel(
             is Result.Success -> {
                 _state.update { it.copy(movieWatchProviders = result.data) }
             }
-            is Result.Error -> TODO()
+            is Result.Error -> {
+                when(result.error) {
+                    ResponseError.BAD_REQUEST -> TODO()
+                    ResponseError.UNAUTHORIZED -> TODO()
+                    ResponseError.FORBIDDEN -> TODO()
+                    ResponseError.NOT_FOUND -> TODO()
+                    ResponseError.METHOD_NOT_ALLOWED -> TODO()
+                    ResponseError.REQUEST_TIMEOUT -> TODO()
+                    ResponseError.TOO_MANY_REQUESTS -> TODO()
+                    ResponseError.NULL_VALUE -> {}
+                    ResponseError.UNKNOWN -> TODO()
+                }
+            }
         }
 
     }

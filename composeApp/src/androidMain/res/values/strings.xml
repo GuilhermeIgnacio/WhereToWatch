@@ -8,4 +8,7 @@
     <string name="duration_time">Duration Time</string>
     <string name="minutes">%1$s min</string>
     <string name="overview">Overview</string>
+    <string name="where_to_watch">Where to Watch</string>
+    <string name="watch_providers_label_subscription">Subscription</string>
+    <string name="watch_provider_label_buy">Buy</string>
 </resources>

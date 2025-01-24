@@ -17,5 +17,6 @@ enum class ResponseError: Error {
     METHOD_NOT_ALLOWED,
     REQUEST_TIMEOUT,
     TOO_MANY_REQUESTS,
+    NULL_VALUE,
     UNKNOWN
 }

@@ -107,12 +107,18 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
         return try {
 
             val response = client.get(MOVIE_WATCH_PROVIDERS_ENDPOINT + id + "/watch/providers")
-            val body = response.body<MovieWatchProvidersResponse>().results["BR"] ?: Country()
+            val body = response.body<MovieWatchProvidersResponse>().results["BR"]
 
 
 
             when(response.status.value) {
-                200 -> Result.Success(body)
+                200 -> {
+                    if (body != null){
+                        Result.Success(body)
+                    } else {
+                        Result.Error(ResponseError.NULL_VALUE)
+                    }
+                }
                 400 -> Result.Error(ResponseError.BAD_REQUEST)
                 401 -> Result.Error(ResponseError.UNAUTHORIZED)
                 403 -> Result.Error(ResponseError.FORBIDDEN)

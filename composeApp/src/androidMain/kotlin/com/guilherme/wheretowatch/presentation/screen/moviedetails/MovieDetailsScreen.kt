@@ -4,13 +4,19 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -29,19 +35,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.guilherme.wheretowatch.R
-import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
+import com.guilherme.wheretowatch.domain.model.Provider
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieDurationSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieRateSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieReleaseDateSection
 import org.koin.compose.viewmodel.koinViewModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @SuppressLint("NewApi")
 @Composable
@@ -59,11 +62,13 @@ fun MovieDetailsScreen(
     val verticalScroll = rememberScrollState()
 
     val movieDetails = state.movieDetails
+    val movieWatchProviders = state.movieWatchProviders
 
     movieDetails?.let { movie ->
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .navigationBarsPadding()
                 .verticalScroll(verticalScroll)
         ) {
             Box(
@@ -146,7 +151,64 @@ fun MovieDetailsScreen(
                 text = movie.overview
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (movieWatchProviders != null) {
+
+                Text(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    text = stringResource(R.string.where_to_watch),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = MaterialTheme.typography.headlineMedium.fontSize
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                val flatRate = movieWatchProviders.flatrate
+                WatchProvidersSection(providerLabel = stringResource(R.string.watch_providers_label_subscription), provider = flatRate)
+
+                val buy = movieWatchProviders.buy
+                WatchProvidersSection(providerLabel = stringResource(R.string.watch_provider_label_buy), provider = buy)
+
+                val rent = movieWatchProviders.rent
+                WatchProvidersSection(providerLabel = stringResource(R.string.watch_provider_label_rent), provider = rent)
+
+                val ads = movieWatchProviders.ads
+                WatchProvidersSection(providerLabel = "Ads", provider = ads)
+
+
+            }
+
         }
     }
 
+}
+
+@Composable
+private fun WatchProvidersSection(providerLabel: String, provider: List<Provider>?) {
+    if (provider != null) {
+
+        Text(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            text = providerLabel,
+            fontSize = MaterialTheme.typography.labelLarge.fontSize
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(8.dp)
+        ) {
+            items(provider) {
+                AsyncImage(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(70.dp),
+                    model = "https://image.tmdb.org/t/p/original" + it.logoPath,
+                    contentDescription = it.providerName + "Logo",
+                    contentScale = ContentScale.Fit
+                )
+            }
+        }
+
+    }
 }

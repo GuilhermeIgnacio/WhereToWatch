@@ -51,6 +51,7 @@ class HomeViewModel(
                         ResponseError.METHOD_NOT_ALLOWED -> TODO()
                         ResponseError.REQUEST_TIMEOUT -> TODO()
                         ResponseError.TOO_MANY_REQUESTS -> TODO()
+                        ResponseError.NULL_VALUE -> TODO()
                         ResponseError.UNKNOWN -> TODO()
                     }
                 }
