@@ -24,6 +24,7 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
 
     companion object {
         val languageTag = Locale.current.toLanguageTag()
+        val region = Locale.current.region
         const val POPULAR_MOVIES_ENDPOINT = "https://api.themoviedb.org/3/movie/popular?language="
         const val MOVIE_DETAILS_ENDPOINT = "https://api.themoviedb.org/3/movie/"
         const val MOVIE_WATCH_PROVIDERS_ENDPOINT = "https://api.themoviedb.org/3/movie/"
@@ -107,9 +108,7 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
         return try {
 
             val response = client.get(MOVIE_WATCH_PROVIDERS_ENDPOINT + id + "/watch/providers")
-            val body = response.body<MovieWatchProvidersResponse>().results["BR"]
-
-
+            val body = response.body<MovieWatchProvidersResponse>().results[region]
 
             when(response.status.value) {
                 200 -> {

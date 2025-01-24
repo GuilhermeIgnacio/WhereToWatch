@@ -93,8 +93,8 @@ fun MovieDetailsScreen(
                         .crossfade(true)
                         .build(),
                     contentDescription = "${movie.title} Poster",
-                    placeholder = painterResource(R.drawable.frame_11),
-                    error = painterResource(R.drawable.frame_11)
+                    placeholder = painterResource(R.drawable.placeholder_image),
+                    error = painterResource(R.drawable.placeholder_image)
                 )
 
                 IconButton(
@@ -218,8 +218,8 @@ private fun WatchProvidersSection(providerLabel: String, provider: List<Provider
                         .build(),
                     contentDescription = it.providerName + "Logo",
                     contentScale = ContentScale.FillWidth,
-                    placeholder = painterResource(R.drawable.frame_11),
-                    error = painterResource(R.drawable.frame_11)
+                    placeholder = painterResource(R.drawable.placeholder_image),
+                    error = painterResource(R.drawable.placeholder_image)
                 )
             }
         }
