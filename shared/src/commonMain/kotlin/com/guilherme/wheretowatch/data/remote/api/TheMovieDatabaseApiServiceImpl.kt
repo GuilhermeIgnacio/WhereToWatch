@@ -30,7 +30,7 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
         const val MOVIE_DETAILS_ENDPOINT = "https://api.themoviedb.org/3/movie/"
         const val MOVIE_WATCH_PROVIDERS_ENDPOINT = "https://api.themoviedb.org/3/movie/"
         const val SEARCH_ENDPOINT = "https://api.themoviedb.org/3/search/multi?"
-        const val TV_SHOW_DETAILS_ENDPOINT = "https://api.themoviedb.org/3/tv/1396?language=pt-BR"
+        const val TV_SHOW_DETAILS_ENDPOINT = "https://api.themoviedb.org/3/tv/"
     }
 
     private val client = HttpClient(CIO) {
