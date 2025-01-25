@@ -9,4 +9,5 @@ interface TheMovieDatabaseApiService {
     suspend fun fetchMovies(): Result<ApiResponse, ResponseError>
     suspend fun fetchMovieDetails(id: Int): Result<MovieDetailsResponse, ResponseError>
     suspend fun fetchMovieProviders(id: Int): Result<Country, ResponseError>
+    suspend fun search(query: String): Result<ApiResponse, ResponseError>
 }
