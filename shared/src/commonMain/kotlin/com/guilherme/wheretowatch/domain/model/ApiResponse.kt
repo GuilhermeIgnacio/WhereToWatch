@@ -14,7 +14,10 @@ data class MovieData(
     val id: Int,
 
     @SerialName("poster_path")
-    val posterPath: String? = null
+    val posterPath: String? = null,
+
+    @SerialName("media_type")
+    val mediaType: String? = null
 )
 
 

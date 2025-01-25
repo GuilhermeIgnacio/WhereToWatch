@@ -11,6 +11,7 @@ import androidx.navigation.toRoute
 import com.guilherme.wheretowatch.presentation.components.BottomNavigationBar
 import com.guilherme.wheretowatch.presentation.screen.home.HomeScreen
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.MovieDetailsScreen
+import com.guilherme.wheretowatch.presentation.screen.tvshowdetails.TVShowDetailsScreen
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -30,7 +31,8 @@ fun SetupNavGraph(
         ) {
             composable<HomeScreen> {
                 HomeScreen(
-                    onMovieClick = { navController.navigate(MovieDetailsScreen(id = it)) }
+                    onMovieClick = { navController.navigate(MovieDetailsScreen(id = it)) },
+                    onTvShowClicked = { navController.navigate(TvShowDetailsScreen(id = it)) }
                 )
             }
 
@@ -43,6 +45,13 @@ fun SetupNavGraph(
                 MovieDetailsScreen(
                     movieId = args.id,
                     onReturnNavigateButtonClicked = { navController.navigate(HomeScreen) }
+                )
+            }
+
+            composable<TvShowDetailsScreen> {
+                val args = it.toRoute<TvShowDetailsScreen>()
+                TVShowDetailsScreen(
+                    tvShowId = args.id
                 )
             }
 
@@ -59,6 +68,9 @@ object BookmarkedMoviesScreen
 
 @Serializable
 data class MovieDetailsScreen(val id: Int)
+
+@Serializable
+data class TvShowDetailsScreen(val id: Int)
 
 data class BottomNavigationItem(
     val label: String,

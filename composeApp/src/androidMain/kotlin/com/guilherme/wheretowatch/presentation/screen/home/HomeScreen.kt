@@ -50,6 +50,7 @@ import coil3.compose.AsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
+import com.guilherme.wheretowatch.domain.MediaType
 import com.guilherme.wheretowatch.domain.model.MovieData
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -57,6 +58,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeScreen(
     onMovieClick: (Int) -> Unit,
+    onTvShowClicked: (Int) -> Unit
 ) {
 
     val viewModel = koinViewModel<HomeViewModel>()
@@ -139,7 +141,15 @@ fun HomeScreen(
                             .width(240.dp)
                             .weight(1f)
                             .clip(RoundedCornerShape(16.dp))
-                            .clickable { onMovieClick(movie.id) },
+                            .clickable {
+
+                                when(movie.mediaType) {
+                                    MediaType.MOVIE.value -> onMovieClick(movie.id)
+                                    MediaType.TV.value -> onTvShowClicked(movie.id)
+                                    null -> onMovieClick(movie.id)
+                                }
+
+                            },
                         model = ImageRequest.Builder(LocalContext.current)
                             .data("https://image.tmdb.org/t/p/w500" + movie.posterPath)
                             .crossfade(true)
