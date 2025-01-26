@@ -4,19 +4,14 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -44,7 +39,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
-import com.guilherme.wheretowatch.domain.model.Provider
+import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieDurationSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieRateSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieReleaseDateSection
@@ -192,38 +187,4 @@ fun MovieDetailsScreen(
         }
     }
 
-}
-
-@Composable
-fun WatchProvidersSection(providerLabel: String, provider: List<Provider>?) {
-    if (provider != null) {
-
-        Text(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            text = providerLabel,
-            fontSize = MaterialTheme.typography.labelLarge.fontSize
-        )
-
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(8.dp)
-        ) {
-            items(provider) {
-                AsyncImage(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(70.dp),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data("https://image.tmdb.org/t/p/original" + it.logoPath)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = it.providerName + "Logo",
-                    contentScale = ContentScale.FillWidth,
-                    placeholder = painterResource(R.drawable.placeholder_image),
-                    error = painterResource(R.drawable.placeholder_image)
-                )
-            }
-        }
-
-    }
 }

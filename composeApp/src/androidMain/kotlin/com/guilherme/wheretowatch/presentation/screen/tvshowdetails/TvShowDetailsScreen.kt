@@ -39,10 +39,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
-import com.guilherme.wheretowatch.presentation.screen.moviedetails.WatchProvidersSection
-import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieDurationSection
-import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieRateSection
-import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieReleaseDateSection
+import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import org.koin.compose.viewmodel.koinViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -178,13 +175,13 @@ fun TVShowDetailsScreen(
 
                 Column {
                     Text(
-                        text = "${tvShow.numberOfSeasons} Seasons",
+                        text = stringResource(R.string.seasons, tvShow.numberOfSeasons),
                         fontWeight = FontWeight.Bold,
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize
                     )
 
                     Text(
-                        text = "${tvShow.numberOfEpisodes} Episodes",
+                        text = stringResource(R.string.episodes, tvShow.numberOfEpisodes),
                         fontWeight = FontWeight.ExtraLight,
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize
                     )
