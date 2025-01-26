@@ -41,6 +41,7 @@ import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
+import com.guilherme.wheretowatch.presentation.viewmodel.TvShowDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

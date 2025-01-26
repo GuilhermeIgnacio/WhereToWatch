@@ -17,15 +17,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            KoinApplication(
-                application = {
-                    modules(appModule)
-                }
-            ) {
-                App(
-                    navController = rememberNavController()
-                )
-            }
+            App(
+                navController = rememberNavController()
+            )
         }
     }
 }

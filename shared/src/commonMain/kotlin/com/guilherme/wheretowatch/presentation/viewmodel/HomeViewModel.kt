@@ -1,4 +1,4 @@
-package com.guilherme.wheretowatch.presentation.screen.home
+package com.guilherme.wheretowatch.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

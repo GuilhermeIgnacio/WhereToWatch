@@ -44,6 +44,7 @@ import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.Mo
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieRateSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieReleaseDateSection
 import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
+import com.guilherme.wheretowatch.presentation.viewmodel.MovieDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @SuppressLint("NewApi")

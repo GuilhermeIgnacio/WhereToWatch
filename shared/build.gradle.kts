@@ -55,6 +55,9 @@ kotlin {
             //Material icons extended
             implementation(libs.material.icons.extended)
 
+            //ViewModel
+            implementation(libs.lifecycle.viewmodel.compose)
+
         }
     }
 }

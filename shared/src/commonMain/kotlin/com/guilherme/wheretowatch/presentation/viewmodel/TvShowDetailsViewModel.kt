@@ -1,6 +1,5 @@
-package com.guilherme.wheretowatch.presentation.screen.tvshowdetails
+package com.guilherme.wheretowatch.presentation.viewmodel
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.domain.Result

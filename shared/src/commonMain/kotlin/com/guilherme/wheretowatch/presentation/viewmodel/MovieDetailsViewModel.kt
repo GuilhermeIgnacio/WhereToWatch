@@ -1,17 +1,14 @@
-package com.guilherme.wheretowatch.presentation.screen.moviedetails
+package com.guilherme.wheretowatch.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.domain.Result
 import com.guilherme.wheretowatch.domain.TheMovieDatabaseApiService
 import com.guilherme.wheretowatch.domain.model.Country
 import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
-import com.guilherme.wheretowatch.domain.model.MovieWatchProvidersResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 data class MovieDetailsState(
     val movieDetails: MovieDetailsResponse? = null,
