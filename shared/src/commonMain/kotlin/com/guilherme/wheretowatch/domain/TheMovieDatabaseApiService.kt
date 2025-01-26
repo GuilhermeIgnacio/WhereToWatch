@@ -11,4 +11,5 @@ interface TheMovieDatabaseApiService {
     suspend fun fetchMovieProviders(id: Int): Result<Country, ResponseError>
     suspend fun search(query: String): Result<ApiResponse, ResponseError>
     suspend fun fetchTvShowDetails(id: Int): Result<TvShowDetailsResponse, ResponseError>
+    suspend fun fetchTvShowWatchProviders(id: Int): Result<Country, ResponseError>
 }

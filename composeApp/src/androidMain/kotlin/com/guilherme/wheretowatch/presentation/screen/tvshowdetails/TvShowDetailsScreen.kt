@@ -39,6 +39,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
+import com.guilherme.wheretowatch.presentation.screen.moviedetails.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieDurationSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieRateSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieReleaseDateSection
@@ -57,9 +58,12 @@ fun TVShowDetailsScreen(
 
     LaunchedEffect(Unit) {
         viewModel.fetchTvShowDetails(tvShowId)
+        viewModel.fetchTvShowWatchProviders(tvShowId)
     }
 
     val tvShowDetails = state.tvShowDetails
+    val tvShowWatchProviders = state.tvShowWatchProviders
+
     val verticalScroll = rememberScrollState()
 
     tvShowDetails?.let { tvShow ->
@@ -204,8 +208,9 @@ fun TVShowDetailsScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            /*if (movieWatchProviders != null) {
+            if (tvShowWatchProviders != null) {
 
+                /*Todo: Add JustWatch credits*/
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     text = stringResource(R.string.where_to_watch),
@@ -215,20 +220,20 @@ fun TVShowDetailsScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                val flatRate = movieWatchProviders.flatrate
+                val flatRate = tvShowWatchProviders.flatrate
                 WatchProvidersSection(providerLabel = stringResource(R.string.watch_providers_label_subscription), provider = flatRate)
 
-                val buy = movieWatchProviders.buy
+                val buy = tvShowWatchProviders.buy
                 WatchProvidersSection(providerLabel = stringResource(R.string.watch_provider_label_buy), provider = buy)
 
-                val rent = movieWatchProviders.rent
+                val rent = tvShowWatchProviders.rent
                 WatchProvidersSection(providerLabel = stringResource(R.string.watch_provider_label_rent), provider = rent)
 
-                val ads = movieWatchProviders.ads
+                val ads = tvShowWatchProviders.ads
                 WatchProvidersSection(providerLabel = "Ads", provider = ads)
 
 
-            }*/
+            }
 
         }
     }

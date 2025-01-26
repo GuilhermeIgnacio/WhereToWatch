@@ -195,7 +195,7 @@ fun MovieDetailsScreen(
 }
 
 @Composable
-private fun WatchProvidersSection(providerLabel: String, provider: List<Provider>?) {
+fun WatchProvidersSection(providerLabel: String, provider: List<Provider>?) {
     if (provider != null) {
 
         Text(
