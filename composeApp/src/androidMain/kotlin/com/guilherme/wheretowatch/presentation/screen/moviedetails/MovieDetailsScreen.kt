@@ -43,6 +43,7 @@ import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieDurationSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieRateSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieReleaseDateSection
+import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
 import org.koin.compose.viewmodel.koinViewModel
 
 @SuppressLint("NewApi")
@@ -160,12 +161,7 @@ fun MovieDetailsScreen(
 
             if (movieWatchProviders != null) {
 
-                Text(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    text = stringResource(R.string.where_to_watch),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = MaterialTheme.typography.headlineMedium.fontSize
-                )
+               WhereToWatchHeader()
 
                 Spacer(modifier = Modifier.height(16.dp))
 

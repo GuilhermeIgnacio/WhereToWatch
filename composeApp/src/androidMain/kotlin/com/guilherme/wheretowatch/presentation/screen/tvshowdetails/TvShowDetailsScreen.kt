@@ -40,6 +40,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
+import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
 import org.koin.compose.viewmodel.koinViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -47,7 +48,7 @@ import java.time.format.DateTimeFormatter
 @SuppressLint("NewApi")
 @Composable
 fun TVShowDetailsScreen(
-    tvShowId: Int
+    tvShowId: Int,
 ) {
 
     val viewModel = koinViewModel<TvShowDetailsViewModel>()
@@ -207,24 +208,27 @@ fun TVShowDetailsScreen(
 
             if (tvShowWatchProviders != null) {
 
-                /*Todo: Add JustWatch credits*/
-                Text(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    text = stringResource(R.string.where_to_watch),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = MaterialTheme.typography.headlineMedium.fontSize
-                )
+                WhereToWatchHeader()
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 val flatRate = tvShowWatchProviders.flatrate
-                WatchProvidersSection(providerLabel = stringResource(R.string.watch_providers_label_subscription), provider = flatRate)
+                WatchProvidersSection(
+                    providerLabel = stringResource(R.string.watch_providers_label_subscription),
+                    provider = flatRate
+                )
 
                 val buy = tvShowWatchProviders.buy
-                WatchProvidersSection(providerLabel = stringResource(R.string.watch_provider_label_buy), provider = buy)
+                WatchProvidersSection(
+                    providerLabel = stringResource(R.string.watch_provider_label_buy),
+                    provider = buy
+                )
 
                 val rent = tvShowWatchProviders.rent
-                WatchProvidersSection(providerLabel = stringResource(R.string.watch_provider_label_rent), provider = rent)
+                WatchProvidersSection(
+                    providerLabel = stringResource(R.string.watch_provider_label_rent),
+                    provider = rent
+                )
 
                 val ads = tvShowWatchProviders.ads
                 WatchProvidersSection(providerLabel = "Ads", provider = ads)

@@ -13,4 +13,5 @@
     <string name="watch_provider_label_buy">Buy</string>
     <string name="seasons">%1$s Seasons</string>
     <string name="episodes">%1$s Episodes</string>
+    <string name="info_provided_by_justwatch">Info provided by JustWatch</string>
 </resources>
