@@ -1,0 +1,12 @@
+CREATE TABLE Bookmark(
+    id INTEGER PRIMARY KEY NOT NULL,
+    posterPath TEXT NOT NULL,
+    mediaType TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM Bookmark;
+
+insert:
+INSERT INTO Bookmark(id, posterPath, mediaType)
+VALUES (?, ?, ?);

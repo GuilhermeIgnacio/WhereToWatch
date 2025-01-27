@@ -3,16 +3,20 @@ package com.guilherme.wheretowatch.navigation
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.guilherme.wheretowatch.presentation.components.BottomNavigationBar
+import com.guilherme.wheretowatch.presentation.screen.bookmarks.BookmarksScreen
 import com.guilherme.wheretowatch.presentation.screen.home.HomeScreen
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.MovieDetailsScreen
 import com.guilherme.wheretowatch.presentation.screen.tvshowdetails.TVShowDetailsScreen
+import com.guilherme.wheretowatch.presentation.viewmodel.BookmarksViewModel
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SetupNavGraph(
@@ -37,7 +41,8 @@ fun SetupNavGraph(
             }
 
             composable<BookmarkedMoviesScreen> {
-                Text("Bookmarked Movies Screen")
+                BookmarksScreen()
+
             }
 
             composable<MovieDetailsScreen> {

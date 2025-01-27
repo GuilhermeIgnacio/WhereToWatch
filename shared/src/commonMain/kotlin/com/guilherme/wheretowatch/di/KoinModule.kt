@@ -1,7 +1,9 @@
 package com.guilherme.wheretowatch.di
 
+import com.guilherme.wheretowatch.data.local.LocalDatabase
 import com.guilherme.wheretowatch.data.remote.api.TheMovieDatabaseApiServiceImpl
 import com.guilherme.wheretowatch.domain.TheMovieDatabaseApiService
+import com.guilherme.wheretowatch.presentation.viewmodel.BookmarksViewModel
 import com.guilherme.wheretowatch.presentation.viewmodel.HomeViewModel
 import com.guilherme.wheretowatch.presentation.viewmodel.MovieDetailsViewModel
 import com.guilherme.wheretowatch.presentation.viewmodel.TvShowDetailsViewModel
@@ -15,9 +17,11 @@ expect val targetModule: Module
 
 val commonModules = module {
     single<TheMovieDatabaseApiService> { TheMovieDatabaseApiServiceImpl() }
+    single { LocalDatabase(get()) }
     viewModel { HomeViewModel(get()) }
-    viewModel { MovieDetailsViewModel(get()) }
+    viewModel { MovieDetailsViewModel(get(), get()) }
     viewModel { TvShowDetailsViewModel(get()) }
+    viewModel { BookmarksViewModel(get()) }
 }
 
 fun initializeKoin(config: (KoinApplication.() -> Unit)? = null) {

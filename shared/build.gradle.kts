@@ -9,6 +9,14 @@ plugins {
     alias(libs.plugins.sqldelight)
 }
 
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("com.guilherme")
+        }
+    }
+}
+
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -16,7 +24,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -27,10 +35,18 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.sqldelight.driver.android)
+        }
+
         commonMain.dependencies {
             // put your Multiplatform dependencies here
+
+            implementation(libs.androidx.lifecycle.viewmodel)
+//            implementation(libs.androidx.lifecycle.runtime.compose)
+
             //Koin
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
@@ -56,7 +72,10 @@ kotlin {
             implementation(libs.material.icons.extended)
 
             //ViewModel
-            implementation(libs.lifecycle.viewmodel.compose)
+//            implementation(libs.lifecycle.viewmodel.compose)
+
+            //SqlDelight
+            implementation(libs.sqldelight.coroutine.extensions)
 
         }
     }

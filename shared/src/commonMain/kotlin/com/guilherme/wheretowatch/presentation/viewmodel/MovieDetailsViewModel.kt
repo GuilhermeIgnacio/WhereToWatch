@@ -1,22 +1,31 @@
 package com.guilherme.wheretowatch.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.guilherme.wheretowatch.data.local.LocalDatabase
 import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.domain.Result
 import com.guilherme.wheretowatch.domain.TheMovieDatabaseApiService
 import com.guilherme.wheretowatch.domain.model.Country
+import com.guilherme.wheretowatch.domain.model.MovieData
 import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class MovieDetailsState(
     val movieDetails: MovieDetailsResponse? = null,
     val movieWatchProviders: Country? = null
 )
 
+sealed interface MovieDetailsEvents{
+    data class BookmarkMovie(val value: MovieData): MovieDetailsEvents
+}
+
 class MovieDetailsViewModel(
     private val tmdbApiService: TheMovieDatabaseApiService,
+    private val localDatabase: LocalDatabase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MovieDetailsState())
@@ -51,6 +60,16 @@ class MovieDetailsViewModel(
             }
         }
 
+    }
+
+    fun onEvent(event: MovieDetailsEvents) {
+        when(event) {
+            is MovieDetailsEvents.BookmarkMovie -> {
+                viewModelScope.launch {
+                    localDatabase.insert(event.value)
+                }
+            }
+        }
     }
 
 }

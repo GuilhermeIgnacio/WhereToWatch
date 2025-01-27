@@ -39,11 +39,14 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
+import com.guilherme.wheretowatch.domain.MediaType
+import com.guilherme.wheretowatch.domain.model.MovieData
 import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieDurationSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieRateSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieReleaseDateSection
 import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
+import com.guilherme.wheretowatch.presentation.viewmodel.MovieDetailsEvents
 import com.guilherme.wheretowatch.presentation.viewmodel.MovieDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -51,7 +54,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun MovieDetailsScreen(
     movieId: Int,
-    onReturnNavigateButtonClicked: () -> Unit
+    onReturnNavigateButtonClicked: () -> Unit,
 ) {
 
     val viewModel = koinViewModel<MovieDetailsViewModel>()
@@ -60,6 +63,7 @@ fun MovieDetailsScreen(
         viewModel.fetchMovieWatchProviders(movieId)
     }
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val onEvent = viewModel::onEvent
 
     val verticalScroll = rememberScrollState()
 
@@ -111,7 +115,17 @@ fun MovieDetailsScreen(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .statusBarsPadding(),
-                    onClick = { /* Todo: Bookmark movie */ }
+                    onClick = {
+                        onEvent(
+                            MovieDetailsEvents.BookmarkMovie(
+                                MovieData(
+                                    id = movie.id,
+                                    posterPath = movie.posterPath,
+                                    mediaType = MediaType.MOVIE.value
+                                )
+                            )
+                        )
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Bookmark,
@@ -162,18 +176,27 @@ fun MovieDetailsScreen(
 
             if (movieWatchProviders != null) {
 
-               WhereToWatchHeader()
+                WhereToWatchHeader()
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 val flatRate = movieWatchProviders.flatrate
-                WatchProvidersSection(providerLabel = stringResource(R.string.watch_providers_label_subscription), provider = flatRate)
+                WatchProvidersSection(
+                    providerLabel = stringResource(R.string.watch_providers_label_subscription),
+                    provider = flatRate
+                )
 
                 val buy = movieWatchProviders.buy
-                WatchProvidersSection(providerLabel = stringResource(R.string.watch_provider_label_buy), provider = buy)
+                WatchProvidersSection(
+                    providerLabel = stringResource(R.string.watch_provider_label_buy),
+                    provider = buy
+                )
 
                 val rent = movieWatchProviders.rent
-                WatchProvidersSection(providerLabel = stringResource(R.string.watch_provider_label_rent), provider = rent)
+                WatchProvidersSection(
+                    providerLabel = stringResource(R.string.watch_provider_label_rent),
+                    provider = rent
+                )
 
                 val ads = movieWatchProviders.ads
                 WatchProvidersSection(providerLabel = "Ads", provider = ads)
