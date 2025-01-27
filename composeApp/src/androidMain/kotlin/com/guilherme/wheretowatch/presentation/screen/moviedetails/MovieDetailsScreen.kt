@@ -16,7 +16,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkAdd
+import androidx.compose.material.icons.filled.BookmarkRemove
 import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +46,7 @@ import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.domain.MediaType
 import com.guilherme.wheretowatch.domain.model.MovieData
+import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
 import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieDurationSection
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieRateSection
@@ -127,9 +133,10 @@ fun MovieDetailsScreen(
                         )
                     }
                 ) {
+
                     Icon(
-                        imageVector = Icons.Outlined.Bookmark,
-                        contentDescription = stringResource(R.string.return_button_content_description)
+                        imageVector = if (movie.toMovieData() in state.bookmarkedMovies) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                        contentDescription = if (movie.toMovieData() in state.bookmarkedMovies) "Remove bookmark" else "Bookmark movie"
                     )
                 }
 
@@ -207,4 +214,13 @@ fun MovieDetailsScreen(
         }
     }
 
+}
+
+//Todo: Extract this function to data layer
+fun MovieDetailsResponse.toMovieData(): MovieData {
+    return MovieData(
+        id = id,
+        posterPath = posterPath,
+        mediaType = MediaType.MOVIE.value
+    )
 }

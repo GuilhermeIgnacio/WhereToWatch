@@ -20,7 +20,7 @@ val commonModules = module {
     single { LocalDatabase(get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { MovieDetailsViewModel(get(), get()) }
-    viewModel { TvShowDetailsViewModel(get()) }
+    viewModel { TvShowDetailsViewModel(get(), get()) }
     viewModel { BookmarksViewModel(get()) }
 }
 

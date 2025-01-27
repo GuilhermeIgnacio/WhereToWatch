@@ -16,7 +16,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -39,8 +41,13 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
+import com.guilherme.wheretowatch.domain.MediaType
+import com.guilherme.wheretowatch.domain.model.MovieData
+import com.guilherme.wheretowatch.domain.model.TvShowDetailsResponse
 import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
+import com.guilherme.wheretowatch.presentation.screen.moviedetails.toMovieData
+import com.guilherme.wheretowatch.presentation.viewmodel.TvShowDetailsEvents
 import com.guilherme.wheretowatch.presentation.viewmodel.TvShowDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import java.time.LocalDate
@@ -54,6 +61,7 @@ fun TVShowDetailsScreen(
 
     val viewModel = koinViewModel<TvShowDetailsViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val onEvent = viewModel::onEvent
 
     LaunchedEffect(Unit) {
         viewModel.fetchTvShowDetails(tvShowId)
@@ -110,11 +118,13 @@ fun TVShowDetailsScreen(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .statusBarsPadding(),
-                    onClick = { /* Todo: Bookmark tv show */ }
+                    onClick = {
+                        onEvent(TvShowDetailsEvents.BookmarkTvShow(tvShow.toMovieData()))
+                    }
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Bookmark,
-                        contentDescription = stringResource(R.string.return_button_content_description)
+                        imageVector = if (tvShow.toMovieData() in state.bookmarkedTvShows) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                        contentDescription = if (tvShow.toMovieData() in state.bookmarkedTvShows) "Remove bookmark" else "Bookmark movie"
                     )
                 }
 
@@ -240,4 +250,12 @@ fun TVShowDetailsScreen(
         }
     }
 
+}
+
+fun TvShowDetailsResponse.toMovieData(): MovieData {
+    return MovieData(
+        id = id,
+        posterPath = posterPath,
+        mediaType = MediaType.TV.value
+    )
 }

@@ -6,6 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TvShowDetailsResponse(
 
+    @SerialName("id")
+    val id: Int,
+
     @SerialName("poster_path")
     val posterPath: String,
 
