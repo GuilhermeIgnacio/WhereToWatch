@@ -10,3 +10,6 @@ SELECT * FROM Bookmark;
 insert:
 INSERT INTO Bookmark(id, posterPath, mediaType)
 VALUES (?, ?, ?);
+
+delete:
+DELETE FROM Bookmark WHERE id = ?;

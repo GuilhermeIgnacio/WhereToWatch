@@ -98,6 +98,7 @@ class MovieDetailsViewModel(
                     if (movie in _state.value.bookmarkedMovies) {
                         //Remove from bookmarks
                         //Todo: Delete from db
+                        localDatabase.delete(event.value)
                     } else {
                         //Insert into bookmarks
                         localDatabase.insert(event.value)

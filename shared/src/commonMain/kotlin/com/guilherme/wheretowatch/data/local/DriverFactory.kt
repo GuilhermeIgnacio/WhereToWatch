@@ -35,12 +35,16 @@ class LocalDatabase(
         }
     }
 
-    suspend fun insert(media: MovieData) {
+    fun insert(media: MovieData) {
         query.insert(
             id = media.id.toLong(),
             posterPath = media.posterPath!!,
             mediaType = media.mediaType!!
         )
+    }
+
+    fun delete(media: MovieData) {
+        query.delete(media.id.toLong())
     }
 
 }

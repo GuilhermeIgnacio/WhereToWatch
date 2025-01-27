@@ -112,7 +112,7 @@ class TvShowDetailsViewModel(
 
                     if (tvShow in _state.value.bookmarkedTvShows) {
                         //Remove from bookmarks
-                        //Todo: Delete from db
+                        localDatabase.delete(event.value)
                     } else {
                         //Insert into bookmarks
                         localDatabase.insert(event.value)
