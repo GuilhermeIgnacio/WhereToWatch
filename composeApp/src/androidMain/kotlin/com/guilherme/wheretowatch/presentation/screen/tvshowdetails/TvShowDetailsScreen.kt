@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -57,6 +58,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun TVShowDetailsScreen(
     tvShowId: Int,
+    onReturnButtonClicked: () -> Unit,
 ) {
 
     val viewModel = koinViewModel<TvShowDetailsViewModel>()
@@ -106,7 +108,7 @@ fun TVShowDetailsScreen(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .statusBarsPadding(),
-                    onClick = { /*Todo: Pop back stack or navigate to home screen*/ }
+                    onClick = { onReturnButtonClicked() }
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -124,7 +126,10 @@ fun TVShowDetailsScreen(
                 ) {
                     Icon(
                         imageVector = if (tvShow.toMovieData() in state.bookmarkedTvShows) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                        contentDescription = if (tvShow.toMovieData() in state.bookmarkedTvShows) "Remove bookmark" else "Bookmark movie"
+                        contentDescription = if (tvShow.toMovieData() in state.bookmarkedTvShows)
+                            stringResource(R.string.remove_bookmark_content_description)
+                        else
+                            stringResource(R.string.bookmark_movie_content_description)
                     )
                 }
 

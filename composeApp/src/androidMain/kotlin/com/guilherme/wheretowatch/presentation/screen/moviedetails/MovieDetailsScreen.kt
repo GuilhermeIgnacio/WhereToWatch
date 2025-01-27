@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -122,21 +123,16 @@ fun MovieDetailsScreen(
                         .align(Alignment.TopEnd)
                         .statusBarsPadding(),
                     onClick = {
-                        onEvent(
-                            MovieDetailsEvents.BookmarkMovie(
-                                MovieData(
-                                    id = movie.id,
-                                    posterPath = movie.posterPath,
-                                    mediaType = MediaType.MOVIE.value
-                                )
-                            )
-                        )
+                        onEvent(MovieDetailsEvents.BookmarkMovie(movie.toMovieData()))
                     }
                 ) {
 
                     Icon(
                         imageVector = if (movie.toMovieData() in state.bookmarkedMovies) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                        contentDescription = if (movie.toMovieData() in state.bookmarkedMovies) "Remove bookmark" else "Bookmark movie"
+                        contentDescription = if (movie.toMovieData() in state.bookmarkedMovies)
+                            stringResource(R.string.remove_bookmark_content_description)
+                        else
+                            stringResource(R.string.bookmark_movie_content_description)
                     )
                 }
 

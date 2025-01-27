@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -52,14 +53,15 @@ fun SetupNavGraph(
                 val args = it.toRoute<MovieDetailsScreen>()
                 MovieDetailsScreen(
                     movieId = args.id,
-                    onReturnNavigateButtonClicked = { navController.navigate(HomeScreen) }
+                    onReturnNavigateButtonClicked = dropUnlessResumed { navController.popBackStack() }
                 )
             }
 
             composable<TvShowDetailsScreen> {
                 val args = it.toRoute<TvShowDetailsScreen>()
                 TVShowDetailsScreen(
-                    tvShowId = args.id
+                    tvShowId = args.id,
+                    onReturnButtonClicked = dropUnlessResumed {  navController.popBackStack() }
                 )
             }
 

@@ -14,4 +14,6 @@
     <string name="seasons">%1$s Seasons</string>
     <string name="episodes">%1$s Episodes</string>
     <string name="info_provided_by_justwatch">Info provided by JustWatch</string>
+    <string name="remove_bookmark_content_description">Remove bookmark</string>
+    <string name="bookmark_movie_content_description">Bookmark movie</string>
 </resources>
