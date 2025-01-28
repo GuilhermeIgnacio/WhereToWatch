@@ -16,6 +16,7 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
+import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
@@ -31,8 +32,6 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
         const val MOVIE_WATCH_PROVIDERS_ENDPOINT = "https://api.themoviedb.org/3/movie/"
         const val SEARCH_ENDPOINT = "https://api.themoviedb.org/3/search/multi?"
         const val TV_SHOW_DETAILS_ENDPOINT = "https://api.themoviedb.org/3/tv/"
-        const val TV_SHOW_WATCH_PROVIDERS_ENDPOINT =
-            "https://api.themoviedb.org/3/tv/{series_id}/watch/providers"
     }
 
     private val client = HttpClient(CIO) {
@@ -53,6 +52,7 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
             }
         }
 
+        install(HttpCache)
     }
 
     override suspend fun fetchMovies(): Result<ApiResponse, ResponseError> {
