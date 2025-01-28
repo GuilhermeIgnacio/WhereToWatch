@@ -1,9 +1,9 @@
 package com.guilherme.wheretowatch.navigation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.NavHostController
@@ -15,9 +15,7 @@ import com.guilherme.wheretowatch.presentation.screen.bookmarks.BookmarksScreen
 import com.guilherme.wheretowatch.presentation.screen.home.HomeScreen
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.MovieDetailsScreen
 import com.guilherme.wheretowatch.presentation.screen.tvshowdetails.TVShowDetailsScreen
-import com.guilherme.wheretowatch.presentation.viewmodel.BookmarksViewModel
 import kotlinx.serialization.Serializable
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SetupNavGraph(
@@ -28,9 +26,10 @@ fun SetupNavGraph(
         bottomBar = {
             BottomNavigationBar(navController)
         }
-    ) { _ ->
+    ) { paddingValues ->
 
         NavHost(
+            modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
             navController = navController,
             startDestination = HomeScreen
         ) {
@@ -41,7 +40,7 @@ fun SetupNavGraph(
                 )
             }
 
-            composable<BookmarkedMoviesScreen> {
+            composable<BookmarksScreen> {
                 BookmarksScreen(
                     onMovieClick = { navController.navigate(MovieDetailsScreen(it)) },
                     onTvShowClicked = { navController.navigate(TvShowDetailsScreen(it)) }
@@ -74,7 +73,7 @@ fun SetupNavGraph(
 object HomeScreen
 
 @Serializable
-object BookmarkedMoviesScreen
+object BookmarksScreen
 
 @Serializable
 data class MovieDetailsScreen(val id: Int)
