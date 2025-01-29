@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -35,7 +36,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun BookmarksScreen(
     onMovieClick: (Int) -> Unit,
-    onTvShowClicked: (Int) -> Unit
+    onTvShowClicked: (Int) -> Unit,
 ) {
 
     val viewModel = koinViewModel<BookmarksViewModel>()
@@ -75,15 +76,13 @@ fun BookmarksScreen(
                             .width(240.dp)
                             .weight(1f)
                             .clip(RoundedCornerShape(16.dp))
-                            .clickable {
-
+                            .clickable(onClick = dropUnlessResumed {
                                 when (media.mediaType) {
                                     MediaType.MOVIE.value -> onMovieClick(media.id)
                                     MediaType.TV.value -> onTvShowClicked(media.id)
                                     null -> onMovieClick(media.id)
                                 }
-
-                            },
+                            }),
                         model = ImageRequest.Builder(LocalContext.current)
                             .data("https://image.tmdb.org/t/p/w500" + media.posterPath)
                             .crossfade(true)

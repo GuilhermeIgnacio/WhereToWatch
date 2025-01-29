@@ -1,10 +1,12 @@
 package com.guilherme.wheretowatch.navigation
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,8 +27,10 @@ fun SetupNavGraph(
     Scaffold(
         bottomBar = {
             BottomNavigationBar(navController)
-        }
+        },
+        contentWindowInsets = WindowInsets(0.dp)
     ) { paddingValues ->
+
 
         NavHost(
             modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),

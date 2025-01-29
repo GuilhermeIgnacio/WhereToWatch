@@ -36,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -49,7 +50,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeScreen(
     onMovieClick: (Int) -> Unit,
-    onTvShowClicked: (Int) -> Unit
+    onTvShowClicked: (Int) -> Unit,
 ) {
 
     val viewModel = koinViewModel<HomeViewModel>()
@@ -132,15 +133,13 @@ fun HomeScreen(
                             .width(240.dp)
                             .weight(1f)
                             .clip(RoundedCornerShape(16.dp))
-                            .clickable {
-
-                                when(movie.mediaType) {
+                            .clickable(onClick = dropUnlessResumed {
+                                when (movie.mediaType) {
                                     MediaType.MOVIE.value -> onMovieClick(movie.id)
                                     MediaType.TV.value -> onTvShowClicked(movie.id)
                                     null -> onMovieClick(movie.id)
                                 }
-
-                            },
+                            }),
                         model = ImageRequest.Builder(LocalContext.current)
                             .data("https://image.tmdb.org/t/p/w500" + movie.posterPath)
                             .crossfade(true)

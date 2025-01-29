@@ -27,7 +27,6 @@ import com.guilherme.wheretowatch.navigation.HomeScreen
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     val route = navController.currentBackStackEntryAsState().value?.destination?.route
-    println("Route -> $route")
 
     val items = listOf(
         BottomNavigationItem(
