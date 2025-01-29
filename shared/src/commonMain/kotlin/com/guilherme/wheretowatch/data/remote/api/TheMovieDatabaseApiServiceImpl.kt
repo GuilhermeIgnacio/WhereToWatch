@@ -9,7 +9,7 @@ import com.guilherme.wheretowatch.domain.model.TvShowDetailsResponse
 import com.guilherme.wheretowatch.domain.model.ApiResponse
 import com.guilherme.wheretowatch.domain.model.Country
 import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
-import com.guilherme.wheretowatch.domain.model.MovieWatchProvidersResponse
+import com.guilherme.wheretowatch.domain.model.MediaWatchProvidersResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -141,7 +141,7 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
         return try {
 
             val response = client.get(MOVIE_WATCH_PROVIDERS_ENDPOINT + id + "/watch/providers")
-            val body = response.body<MovieWatchProvidersResponse>().results[region]
+            val body = response.body<MediaWatchProvidersResponse>().results[region]
 
             when (response.status.value) {
                 200 -> {
@@ -177,7 +177,7 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
         return try {
 
             val response = client.get("$TV_SHOW_DETAILS_ENDPOINT$id/watch/providers")
-            val body = response.body<MovieWatchProvidersResponse>().results[region]
+            val body = response.body<MediaWatchProvidersResponse>().results[region]
 
             when (response.status.value) {
                 200 -> {

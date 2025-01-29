@@ -8,7 +8,7 @@ import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.domain.Result
 import com.guilherme.wheretowatch.domain.TheMovieDatabaseApiService
 import com.guilherme.wheretowatch.domain.model.Country
-import com.guilherme.wheretowatch.domain.model.MovieData
+import com.guilherme.wheretowatch.domain.model.MediaData
 import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,13 +17,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class MovieDetailsState(
-    val bookmarkedMovies: List<MovieData> = emptyList(),
+    val bookmarkedMovies: List<MediaData> = emptyList(),
     val movieDetails: MovieDetailsResponse? = null,
     val movieWatchProviders: Country? = null,
 )
 
 sealed interface MovieDetailsEvents {
-    data class BookmarkMovie(val value: MovieData) : MovieDetailsEvents
+    data class BookmarkMovie(val value: MediaData) : MovieDetailsEvents
 }
 
 class MovieDetailsViewModel(

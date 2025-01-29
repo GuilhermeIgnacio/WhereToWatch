@@ -5,17 +5,17 @@ import androidx.lifecycle.viewModelScope
 import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.domain.Result
 import com.guilherme.wheretowatch.domain.TheMovieDatabaseApiService
-import com.guilherme.wheretowatch.domain.model.MovieData
+import com.guilherme.wheretowatch.domain.model.MediaData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class HomeState(
-    val apiResponse: List<MovieData> = emptyList(),
+    val apiResponse: List<MediaData> = emptyList(),
     val searchQuery: String = "",
     val inputedSearchQuery: String? = null,
-    val searchResults: List<MovieData> = emptyList(),
+    val searchResults: List<MediaData> = emptyList(),
     val searchMode: Boolean = false,
 )
 

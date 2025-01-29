@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieWatchProvidersResponse(
+data class MediaWatchProvidersResponse(
     @SerialName("results")
     val results: Map<String, Country>
 )

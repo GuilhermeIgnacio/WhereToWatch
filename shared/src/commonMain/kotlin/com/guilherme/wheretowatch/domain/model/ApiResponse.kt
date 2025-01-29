@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ApiResponse(
-    val results: List<MovieData>
+    val results: List<MediaData>
 )
 
 @Serializable
-data class MovieData(
+data class MediaData(
     @SerialName("id")
     val id: Int,
 

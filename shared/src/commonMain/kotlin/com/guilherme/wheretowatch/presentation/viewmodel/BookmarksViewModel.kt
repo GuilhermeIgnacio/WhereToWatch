@@ -1,18 +1,16 @@
 package com.guilherme.wheretowatch.presentation.viewmodel
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.guilherme.wheretowatch.data.local.LocalDatabase
-import com.guilherme.wheretowatch.domain.model.MovieData
+import com.guilherme.wheretowatch.domain.model.MediaData
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.asStateFlow
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
 data class BookmarksState(
-    val bookmarks: List<MovieData> = emptyList(),
+    val bookmarks: List<MediaData> = emptyList(),
 )
 
 class BookmarksViewModel(private val database: LocalDatabase) : ViewModel() {

@@ -4,7 +4,7 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.db.SqlDriver
 import com.guilherme.Database
-import com.guilherme.wheretowatch.domain.model.MovieData
+import com.guilherme.wheretowatch.domain.model.MediaData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
@@ -20,13 +20,13 @@ class LocalDatabase(
     private val database = Database(driverFactory.createDriver())
     private val query = database.bookmarkQueries
 
-    fun getBookmarks(): Flow<List<MovieData>> {
+    fun getBookmarks(): Flow<List<MediaData>> {
         return query.selectAll()
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map {bookmarkEntities ->
                 bookmarkEntities.map { bookmarkEntity ->
-                    MovieData(
+                    MediaData(
                         id = bookmarkEntity.id.toInt(),
                         posterPath = bookmarkEntity.posterPath,
                         mediaType = bookmarkEntity.mediaType
@@ -35,7 +35,7 @@ class LocalDatabase(
         }
     }
 
-    fun insert(media: MovieData) {
+    fun insert(media: MediaData) {
         query.insert(
             id = media.id.toLong(),
             posterPath = media.posterPath!!,
@@ -43,7 +43,7 @@ class LocalDatabase(
         )
     }
 
-    fun delete(media: MovieData) {
+    fun delete(media: MediaData) {
         query.delete(media.id.toLong())
     }
 

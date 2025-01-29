@@ -8,7 +8,7 @@ import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.domain.Result
 import com.guilherme.wheretowatch.domain.TheMovieDatabaseApiService
 import com.guilherme.wheretowatch.domain.model.Country
-import com.guilherme.wheretowatch.domain.model.MovieData
+import com.guilherme.wheretowatch.domain.model.MediaData
 import com.guilherme.wheretowatch.domain.model.TvShowDetailsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,13 +17,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class TvShowDetailsState(
-    val bookmarkedTvShows: List<MovieData> = emptyList(),
+    val bookmarkedTvShows: List<MediaData> = emptyList(),
     val tvShowDetails: TvShowDetailsResponse? = null,
     val tvShowWatchProviders: Country? = null,
 )
 
 sealed interface TvShowDetailsEvents {
-    data class BookmarkTvShow(val value: MovieData) : TvShowDetailsEvents
+    data class BookmarkTvShow(val value: MediaData) : TvShowDetailsEvents
 }
 
 class TvShowDetailsViewModel(
