@@ -31,6 +31,9 @@ kotlin {
             //Fonts
             implementation("androidx.compose.ui:ui-text-google-fonts:1.7.6")
 
+            //Splash Screen
+            implementation("androidx.core:core-splashscreen:1.0.1")
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)

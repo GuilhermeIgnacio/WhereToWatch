@@ -39,6 +39,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.sqldelight.driver.android)
+            implementation("androidx.core:core-splashscreen:1.0.1")
         }
 
         commonMain.dependencies {
