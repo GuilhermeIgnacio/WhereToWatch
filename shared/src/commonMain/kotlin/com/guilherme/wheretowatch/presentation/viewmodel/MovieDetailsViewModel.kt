@@ -67,6 +67,7 @@ class MovieDetailsViewModel(
                     ResponseError.TOO_MANY_REQUESTS -> TODO()
                     ResponseError.NULL_VALUE -> {}
                     ResponseError.UNKNOWN -> TODO()
+                    ResponseError.UNRESOLVED_ADDRESS -> TODO()
                 }
             }
         }

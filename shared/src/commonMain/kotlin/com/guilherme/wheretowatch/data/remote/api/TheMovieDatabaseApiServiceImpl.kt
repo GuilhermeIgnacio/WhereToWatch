@@ -20,6 +20,7 @@ import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.network.UnresolvedAddressException
 import kotlinx.serialization.json.Json
 
 class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
@@ -75,6 +76,9 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
                 }
             }
 
+        } catch (e: UnresolvedAddressException) {
+            e.printStackTrace()
+            Result.Error(ResponseError.UNRESOLVED_ADDRESS)
         } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(ResponseError.UNKNOWN)

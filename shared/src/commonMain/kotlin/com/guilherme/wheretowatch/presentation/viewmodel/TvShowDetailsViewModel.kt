@@ -57,6 +57,7 @@ class TvShowDetailsViewModel(
                     ResponseError.TOO_MANY_REQUESTS -> TODO()
                     ResponseError.NULL_VALUE -> TODO()
                     ResponseError.UNKNOWN -> TODO()
+                    ResponseError.UNRESOLVED_ADDRESS -> TODO()
                 }
             }
         }
@@ -83,6 +84,7 @@ class TvShowDetailsViewModel(
                     ResponseError.TOO_MANY_REQUESTS -> TODO()
                     ResponseError.NULL_VALUE -> TODO()
                     ResponseError.UNKNOWN -> TODO()
+                    ResponseError.UNRESOLVED_ADDRESS -> TODO()
                 }
             }
         }

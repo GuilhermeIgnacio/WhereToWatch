@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class HomeState(
+    val isError: Boolean = false,
+    val error: ResponseError? = null,
     val apiResponse: List<MediaData> = emptyList(),
     val searchQuery: String = "",
     val inputedSearchQuery: String? = null,
@@ -42,23 +44,17 @@ class HomeViewModel(
                 is Result.Success -> {
                     _state.update {
                         it.copy(
+                            isError = false,
                             apiResponse = result.data.results
                         )
                     }
                 }
 
                 is Result.Error -> {
-                    when (result.error) {
-                        ResponseError.BAD_REQUEST -> TODO()
-                        ResponseError.UNAUTHORIZED -> TODO()
-                        ResponseError.FORBIDDEN -> TODO()
-                        ResponseError.NOT_FOUND -> TODO()
-                        ResponseError.METHOD_NOT_ALLOWED -> TODO()
-                        ResponseError.REQUEST_TIMEOUT -> TODO()
-                        ResponseError.TOO_MANY_REQUESTS -> TODO()
-                        ResponseError.NULL_VALUE -> TODO()
-                        ResponseError.UNKNOWN -> TODO()
-                    }
+                    _state.update{it.copy(
+                        isError = true,
+                        error = result.error
+                    )}
                 }
             }
         }
@@ -80,23 +76,18 @@ class HomeViewModel(
                                 it.copy(
                                     inputedSearchQuery = searchQuery,
                                     searchMode = true,
+                                    isError = false,
+                                    error = null,
                                     searchResults = result.data.results
                                 )
                             }
                         }
 
                         is Result.Error -> {
-                            when(result.error) {
-                                ResponseError.BAD_REQUEST -> TODO()
-                                ResponseError.UNAUTHORIZED -> TODO()
-                                ResponseError.FORBIDDEN -> TODO()
-                                ResponseError.NOT_FOUND -> TODO()
-                                ResponseError.METHOD_NOT_ALLOWED -> TODO()
-                                ResponseError.REQUEST_TIMEOUT -> TODO()
-                                ResponseError.TOO_MANY_REQUESTS -> TODO()
-                                ResponseError.NULL_VALUE -> TODO()
-                                ResponseError.UNKNOWN -> TODO()
-                            }
+                            _state.update{it.copy(
+                                isError = true,
+                                error = result.error,
+                            )}
                         }
                     }
 

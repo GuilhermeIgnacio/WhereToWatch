@@ -18,5 +18,6 @@ enum class ResponseError: Error {
     REQUEST_TIMEOUT,
     TOO_MANY_REQUESTS,
     NULL_VALUE,
+    UNRESOLVED_ADDRESS,
     UNKNOWN
 }
