@@ -2,6 +2,7 @@ package com.guilherme.wheretowatch.presentation.screen.tvshowdetails
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -136,13 +137,18 @@ fun TVShowDetailsScreen(
                                     onEvent(TvShowDetailsEvents.BookmarkTvShow(tvShow.toMovieData()))
                                 }
                             ) {
-                                Icon(
-                                    imageVector = if (tvShow.toMovieData() in state.bookmarkedTvShows) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                                    contentDescription = if (tvShow.toMovieData() in state.bookmarkedTvShows)
-                                        stringResource(R.string.remove_bookmark_content_description)
-                                    else
-                                        stringResource(R.string.bookmark_movie_content_description)
-                                )
+                                Crossfade(
+                                    targetState = tvShow.toMovieData() in state.bookmarkedTvShows,
+                                    label = ""
+                                ) {
+                                    Icon(
+                                        imageVector = if (it) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                                        contentDescription = if (it)
+                                            stringResource(R.string.remove_bookmark_content_description)
+                                        else
+                                            stringResource(R.string.bookmark_movie_content_description)
+                                    )
+                                }
                             }
 
                         }

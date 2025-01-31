@@ -3,6 +3,7 @@ package com.guilherme.wheretowatch.presentation.screen.moviedetails
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -141,14 +142,17 @@ fun MovieDetailsScreen(
                                     onEvent(MovieDetailsEvents.BookmarkMovie(movie.toMovieData()))
                                 }
                             ) {
-
-                                Icon(
-                                    imageVector = if (movie.toMovieData() in state.bookmarkedMovies) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                                    contentDescription = if (movie.toMovieData() in state.bookmarkedMovies)
-                                        stringResource(R.string.remove_bookmark_content_description)
-                                    else
-                                        stringResource(R.string.bookmark_movie_content_description)
-                                )
+                                Crossfade(
+                                    targetState = movie.toMovieData() in state.bookmarkedMovies
+                                ) {
+                                    Icon(
+                                        imageVector = if (it) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                                        contentDescription = if (it)
+                                            stringResource(R.string.remove_bookmark_content_description)
+                                        else
+                                            stringResource(R.string.bookmark_movie_content_description)
+                                    )
+                                }
                             }
 
                         }
