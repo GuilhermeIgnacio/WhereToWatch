@@ -20,6 +20,8 @@ data class MovieDetailsState(
     val bookmarkedMovies: List<MediaData> = emptyList(),
     val movieDetails: MovieDetailsResponse? = null,
     val movieWatchProviders: Country? = null,
+    val isError: Boolean = false,
+    val error: ResponseError? = null,
 )
 
 sealed interface MovieDetailsEvents {
@@ -43,31 +45,44 @@ class MovieDetailsViewModel(
     suspend fun fetchMovieDetails(id: Int) {
         when (val result = tmdbApiService.fetchMovieDetails(id)) {
             is Result.Success -> {
-                _state.update { it.copy(movieDetails = result.data) }
+                _state.update {
+                    it.copy(
+                        movieDetails = result.data,
+                        isError = false,
+                        error = null
+                    )
+                }
             }
 
-            is Result.Error -> TODO()
+            is Result.Error -> {
+                _state.update {
+                    it.copy(
+                        isError = true,
+                        error = result.error
+                    )
+                }
+            }
         }
     }
 
     suspend fun fetchMovieWatchProviders(id: Int) {
         when (val result = tmdbApiService.fetchMovieProviders(id)) {
             is Result.Success -> {
-                _state.update { it.copy(movieWatchProviders = result.data) }
+                _state.update {
+                    it.copy(
+                        movieWatchProviders = result.data,
+                        isError = false,
+                        error = null
+                    )
+                }
             }
 
             is Result.Error -> {
-                when (result.error) {
-                    ResponseError.BAD_REQUEST -> TODO()
-                    ResponseError.UNAUTHORIZED -> TODO()
-                    ResponseError.FORBIDDEN -> TODO()
-                    ResponseError.NOT_FOUND -> TODO()
-                    ResponseError.METHOD_NOT_ALLOWED -> TODO()
-                    ResponseError.REQUEST_TIMEOUT -> TODO()
-                    ResponseError.TOO_MANY_REQUESTS -> TODO()
-                    ResponseError.NULL_VALUE -> {}
-                    ResponseError.UNKNOWN -> TODO()
-                    ResponseError.UNRESOLVED_ADDRESS -> TODO()
+                _state.update {
+                    it.copy(
+                        isError = true,
+                        error = result.error
+                    )
                 }
             }
         }
