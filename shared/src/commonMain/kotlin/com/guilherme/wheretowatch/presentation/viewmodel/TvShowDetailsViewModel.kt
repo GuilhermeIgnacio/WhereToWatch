@@ -20,6 +20,9 @@ data class TvShowDetailsState(
     val bookmarkedTvShows: List<MediaData> = emptyList(),
     val tvShowDetails: TvShowDetailsResponse? = null,
     val tvShowWatchProviders: Country? = null,
+    val fetchWatchProvidersError: Boolean = false,
+    val isError: Boolean? = null,
+    val error: ResponseError? = null,
 )
 
 sealed interface TvShowDetailsEvents {
@@ -43,22 +46,20 @@ class TvShowDetailsViewModel(
     suspend fun fetchTvShowDetails(id: Int) {
         when (val result = tmdbApiService.fetchTvShowDetails(id)) {
             is Result.Success -> {
-                _state.update { it.copy(tvShowDetails = result.data) }
+                _state.update {
+                    it.copy(
+                        tvShowDetails = result.data,
+                        isError = false,
+                        error = null
+                    )
+                }
             }
 
             is Result.Error -> {
-                when (result.error) {
-                    ResponseError.BAD_REQUEST -> TODO()
-                    ResponseError.UNAUTHORIZED -> TODO()
-                    ResponseError.FORBIDDEN -> TODO()
-                    ResponseError.NOT_FOUND -> TODO()
-                    ResponseError.METHOD_NOT_ALLOWED -> TODO()
-                    ResponseError.REQUEST_TIMEOUT -> TODO()
-                    ResponseError.TOO_MANY_REQUESTS -> TODO()
-                    ResponseError.NULL_VALUE -> TODO()
-                    ResponseError.UNKNOWN -> TODO()
-                    ResponseError.UNRESOLVED_ADDRESS -> TODO()
-                }
+                _state.update{it.copy(
+                    isError = true,
+                    error = result.error
+                )}
             }
         }
     }
@@ -68,24 +69,14 @@ class TvShowDetailsViewModel(
             is Result.Success -> {
                 _state.update {
                     it.copy(
-                        tvShowWatchProviders = result.data
+                        tvShowWatchProviders = result.data,
+                        fetchWatchProvidersError = false
                     )
                 }
             }
 
             is Result.Error -> {
-                when (result.error) {
-                    ResponseError.BAD_REQUEST -> TODO()
-                    ResponseError.UNAUTHORIZED -> TODO()
-                    ResponseError.FORBIDDEN -> TODO()
-                    ResponseError.NOT_FOUND -> TODO()
-                    ResponseError.METHOD_NOT_ALLOWED -> TODO()
-                    ResponseError.REQUEST_TIMEOUT -> TODO()
-                    ResponseError.TOO_MANY_REQUESTS -> TODO()
-                    ResponseError.NULL_VALUE -> TODO()
-                    ResponseError.UNKNOWN -> TODO()
-                    ResponseError.UNRESOLVED_ADDRESS -> TODO()
-                }
+                _state.update { it.copy(fetchWatchProvidersError = true) }
             }
         }
     }
