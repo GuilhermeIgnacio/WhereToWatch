@@ -54,6 +54,7 @@ import com.guilherme.wheretowatch.presentation.viewmodel.TvShowDetailsViewModel
 import org.jetbrains.compose.resources.getString
 import org.koin.compose.viewmodel.koinViewModel
 import wheretowatch.composeapp.generated.resources.Res
+import wheretowatch.composeapp.generated.resources.return_button_content_description
 import wheretowatch.composeapp.generated.resources.watch_providers_error_snackbar_message
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -274,7 +275,18 @@ fun TVShowDetailsScreen(
                 }
             }
         } else if (it == true) {
-            ErrorDisplay(state.error)
+            Box {
+
+                IconButton(
+                    modifier = Modifier.statusBarsPadding(),
+                    onClick = { onReturnButtonClicked() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = org.jetbrains.compose.resources.stringResource(Res.string.return_button_content_description)
+                    )
+                }
+                ErrorDisplay(state.error)
+            }
         }
     }
 

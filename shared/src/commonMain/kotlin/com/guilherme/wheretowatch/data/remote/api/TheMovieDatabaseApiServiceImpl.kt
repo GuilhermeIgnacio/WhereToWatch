@@ -105,6 +105,9 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
                     Result.Error(ResponseError.UNKNOWN)
                 }
             }
+        } catch (e: UnresolvedAddressException) {
+            e.printStackTrace()
+            Result.Error(ResponseError.UNRESOLVED_ADDRESS)
         } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(ResponseError.UNKNOWN)
@@ -133,6 +136,9 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
                 }
             }
 
+        } catch (e: UnresolvedAddressException) {
+            e.printStackTrace()
+            Result.Error(ResponseError.UNRESOLVED_ADDRESS)
         } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(ResponseError.UNKNOWN)
@@ -169,6 +175,9 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
                 }
             }
 
+        } catch (e: UnresolvedAddressException) {
+            e.printStackTrace()
+            Result.Error(ResponseError.UNRESOLVED_ADDRESS)
         } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(ResponseError.UNKNOWN)
@@ -207,6 +216,9 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
             }
 
 
+        } catch (e: UnresolvedAddressException) {
+            e.printStackTrace()
+            Result.Error(ResponseError.UNRESOLVED_ADDRESS)
         } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(ResponseError.UNKNOWN)
@@ -235,6 +247,9 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
                     Result.Error(ResponseError.UNKNOWN)
                 }
             }
+        } catch (e: UnresolvedAddressException) {
+            e.printStackTrace()
+            Result.Error(ResponseError.UNRESOLVED_ADDRESS)
         } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(ResponseError.UNKNOWN)

@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Icon
@@ -58,6 +59,7 @@ import com.guilherme.wheretowatch.presentation.viewmodel.MovieDetailsViewModel
 import org.jetbrains.compose.resources.getString
 import org.koin.compose.viewmodel.koinViewModel
 import wheretowatch.composeapp.generated.resources.Res
+import wheretowatch.composeapp.generated.resources.return_button_content_description
 import wheretowatch.composeapp.generated.resources.watch_providers_error_snackbar_message
 
 @SuppressLint("NewApi")
@@ -233,7 +235,19 @@ fun MovieDetailsScreen(
                 }
             }
         } else if (it == true) {
-            ErrorDisplay(state.error)
+            Box {
+
+                IconButton(
+                    modifier = Modifier.statusBarsPadding(),
+                    onClick = { onReturnNavigateButtonClicked() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = org.jetbrains.compose.resources.stringResource(Res.string.return_button_content_description)
+                    )
+                }
+
+                ErrorDisplay(state.error)
+            }
         }
     }
 
