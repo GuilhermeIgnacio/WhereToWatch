@@ -20,7 +20,7 @@ data class MovieDetailsState(
     val bookmarkedMovies: List<MediaData> = emptyList(),
     val movieDetails: MovieDetailsResponse? = null,
     val movieWatchProviders: Country? = null,
-    val isError: Boolean = false,
+    val isError: Boolean? = null,
     val error: ResponseError? = null,
 )
 

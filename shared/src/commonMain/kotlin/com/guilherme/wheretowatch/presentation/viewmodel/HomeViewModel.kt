@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class HomeState(
-    val isError: Boolean = false,
+    val isError: Boolean? = null,
     val error: ResponseError? = null,
     val apiResponse: List<MediaData> = emptyList(),
     val searchQuery: String = "",

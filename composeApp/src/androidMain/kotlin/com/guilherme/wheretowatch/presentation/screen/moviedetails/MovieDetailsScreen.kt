@@ -2,6 +2,7 @@ package com.guilherme.wheretowatch.presentation.screen.moviedetails
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -81,154 +82,159 @@ fun MovieDetailsScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    if (!state.isError) {
-        Scaffold(
-            snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-        ) { _ ->
-            movieDetails?.let { movie ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .navigationBarsPadding()
-                        .verticalScroll(verticalScroll)
-                ) {
-                    Box(
-                        modifier = Modifier.fillMaxWidth()
+    AnimatedContent(
+        targetState = state.isError, label = ""
+    ) {
+
+        if (it == false) {
+            Scaffold(
+                snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+            ) { _ ->
+                movieDetails?.let { movie ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                            .verticalScroll(verticalScroll)
                     ) {
-                        AsyncImage(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(
-                                    RoundedCornerShape(
-                                        bottomStart = 24.dp,
-                                        bottomEnd = 24.dp
-                                    )
-                                ),
-                            contentScale = ContentScale.FillWidth,
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data("https://image.tmdb.org/t/p/original" + movie.posterPath)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = "${movie.title} Poster",
-                            placeholder = painterResource(R.drawable.placeholder_image),
-                            error = painterResource(R.drawable.placeholder_image)
-                        )
-
-                        IconButton(
-                            modifier = Modifier
-                                .align(Alignment.TopStart)
-                                .statusBarsPadding(),
-                            onClick = { onReturnNavigateButtonClicked() }
+                        Box(
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.return_button_content_description)
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(
+                                        RoundedCornerShape(
+                                            bottomStart = 24.dp,
+                                            bottomEnd = 24.dp
+                                        )
+                                    ),
+                                contentScale = ContentScale.FillWidth,
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data("https://image.tmdb.org/t/p/original" + movie.posterPath)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "${movie.title} Poster",
+                                placeholder = painterResource(R.drawable.placeholder_image),
+                                error = painterResource(R.drawable.placeholder_image)
                             )
-                        }
 
-                        IconButton(
-                            modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .statusBarsPadding(),
-                            onClick = {
-                                onEvent(MovieDetailsEvents.BookmarkMovie(movie.toMovieData()))
+                            IconButton(
+                                modifier = Modifier
+                                    .align(Alignment.TopStart)
+                                    .statusBarsPadding(),
+                                onClick = { onReturnNavigateButtonClicked() }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = stringResource(R.string.return_button_content_description)
+                                )
                             }
-                        ) {
 
-                            Icon(
-                                imageVector = if (movie.toMovieData() in state.bookmarkedMovies) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                                contentDescription = if (movie.toMovieData() in state.bookmarkedMovies)
-                                    stringResource(R.string.remove_bookmark_content_description)
-                                else
-                                    stringResource(R.string.bookmark_movie_content_description)
-                            )
+                            IconButton(
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .statusBarsPadding(),
+                                onClick = {
+                                    onEvent(MovieDetailsEvents.BookmarkMovie(movie.toMovieData()))
+                                }
+                            ) {
+
+                                Icon(
+                                    imageVector = if (movie.toMovieData() in state.bookmarkedMovies) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                                    contentDescription = if (movie.toMovieData() in state.bookmarkedMovies)
+                                        stringResource(R.string.remove_bookmark_content_description)
+                                    else
+                                        stringResource(R.string.bookmark_movie_content_description)
+                                )
+                            }
+
                         }
-
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        text = movie.title,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.headlineLarge.fontSize,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        MovieReleaseDateSection(movie)
-
-                        MovieRateSection(movie)
-
-                        MovieDurationSection(movie)
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        text = stringResource(R.string.overview),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.headlineMedium.fontSize
-                    )
-
-                    Text(
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        text = movie.overview
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    if (movieWatchProviders != null) {
-
-                        WhereToWatchHeader()
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        val flatRate = movieWatchProviders.flatrate
-                        WatchProvidersSection(
-                            providerLabel = stringResource(R.string.watch_providers_label_subscription),
-                            provider = flatRate
+                        Text(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            text = movie.title,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                            textAlign = TextAlign.Center
                         )
 
-                        val buy = movieWatchProviders.buy
-                        WatchProvidersSection(
-                            providerLabel = stringResource(R.string.watch_provider_label_buy),
-                            provider = buy
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            MovieReleaseDateSection(movie)
+
+                            MovieRateSection(movie)
+
+                            MovieDurationSection(movie)
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            text = stringResource(R.string.overview),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = MaterialTheme.typography.headlineMedium.fontSize
                         )
 
-                        val rent = movieWatchProviders.rent
-                        WatchProvidersSection(
-                            providerLabel = stringResource(R.string.watch_provider_label_rent),
-                            provider = rent
+                        Text(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            text = movie.overview
                         )
 
-                        val ads = movieWatchProviders.ads
-                        WatchProvidersSection(providerLabel = "Ads", provider = ads)
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        if (movieWatchProviders != null) {
+
+                            WhereToWatchHeader()
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            val flatRate = movieWatchProviders.flatrate
+                            WatchProvidersSection(
+                                providerLabel = stringResource(R.string.watch_providers_label_subscription),
+                                provider = flatRate
+                            )
+
+                            val buy = movieWatchProviders.buy
+                            WatchProvidersSection(
+                                providerLabel = stringResource(R.string.watch_provider_label_buy),
+                                provider = buy
+                            )
+
+                            val rent = movieWatchProviders.rent
+                            WatchProvidersSection(
+                                providerLabel = stringResource(R.string.watch_provider_label_rent),
+                                provider = rent
+                            )
+
+                            val ads = movieWatchProviders.ads
+                            WatchProvidersSection(providerLabel = "Ads", provider = ads)
 
 
-                    } else {
-                        LaunchedEffect(Unit) {
+                        } else {
+                            LaunchedEffect(Unit) {
 
 
-                            when (state.error) {
-                                null -> {}
-                                else -> snackbarHostState.showSnackbar(getString(Res.string.watch_providers_error_snackbar_message))
+                                when (state.error) {
+                                    null -> {}
+                                    else -> snackbarHostState.showSnackbar(getString(Res.string.watch_providers_error_snackbar_message))
+                                }
                             }
                         }
-                    }
 
+                    }
                 }
             }
+        } else if (it == true) {
+            ErrorDisplay(state.error)
         }
-    } else {
-        ErrorDisplay(state.error)
     }
 
 }

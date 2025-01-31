@@ -67,113 +67,120 @@ fun HomeScreen(
 
     var expanded by rememberSaveable { mutableStateOf(false) }
 
-    if (!state.isError) {
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .statusBarsPadding(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            item {
-                SearchBar(
-                    modifier = Modifier.fillMaxWidth(),
-                    inputField = {
-                        SearchBarDefaults.InputField(
-                            onSearch = { onEvent(HomeEvents.OnSearch) },
-                            expanded = expanded,
-                            onExpandedChange = { expanded = it },
-                            placeholder = { Text(stringResource(R.string.search_placeholder)) },
-                            leadingIcon = {
 
-                                AnimatedContent(
-                                    targetState = state.searchMode
-                                ) {
-                                    if (it) {
-                                        IconButton(
-                                            onClick = { onEvent(HomeEvents.DisableSearchMode) }
-                                        ) {
+    AnimatedContent(
+        targetState = state.isError, label = ""
+    ) {
+
+        if (it == false) {
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    SearchBar(
+                        modifier = Modifier.fillMaxWidth(),
+                        inputField = {
+                            SearchBarDefaults.InputField(
+                                onSearch = { onEvent(HomeEvents.OnSearch) },
+                                expanded = expanded,
+                                onExpandedChange = { expanded = it },
+                                placeholder = { Text(stringResource(R.string.search_placeholder)) },
+                                leadingIcon = {
+
+                                    AnimatedContent(
+                                        targetState = state.searchMode
+                                    ) {
+                                        if (it) {
+                                            IconButton(
+                                                onClick = { onEvent(HomeEvents.DisableSearchMode) }
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                                    contentDescription = "Return Icon Button"
+                                                )
+                                            }
+                                        } else {
                                             Icon(
-                                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                                contentDescription = "Return Icon Button"
+                                                Icons.Default.Search,
+                                                contentDescription = "Search Icon"
                                             )
                                         }
-                                    } else {
-                                        Icon(
-                                            Icons.Default.Search,
-                                            contentDescription = "Search Icon"
-                                        )
                                     }
-                                }
-                            },
-                            query = state.searchQuery,
-                            onQueryChange = { onEvent(HomeEvents.OnQueryChange(it)) }
-                        )
-                    },
-                    shape = RoundedCornerShape(16.dp),
-                    expanded = false,
-                    onExpandedChange = {}
-                ) {}
-            }
-
-            item {
-
-                AnimatedContent(
-                    targetState = if (!state.searchMode) stringResource(R.string.popular_movies) else "Results for \"${state.inputedSearchQuery ?: ""}\""
-                ) { text ->
-                    Text(
-                        text = text,
-                        fontSize = MaterialTheme.typography.headlineLarge.fontSize,
-                        fontWeight = FontWeight.Bold
-                    )
+                                },
+                                query = state.searchQuery,
+                                onQueryChange = { onEvent(HomeEvents.OnQueryChange(it)) }
+                            )
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        expanded = false,
+                        onExpandedChange = {}
+                    ) {}
                 }
-            }
 
-            item {
-                HorizontalDivider(modifier = Modifier.fillMaxWidth())
-            }
+                item {
 
-            val apiResponse = if (!state.searchMode) state.apiResponse else state.searchResults
-
-            items(apiResponse.chunked(2)) { rowItems ->
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    rowItems.forEach { movie ->
-                        AsyncImage(
-                            modifier = Modifier
-                                .width(240.dp)
-                                .weight(1f)
-                                .clip(RoundedCornerShape(16.dp))
-                                .clickable(onClick = dropUnlessResumed {
-                                    when (movie.mediaType) {
-                                        MediaType.MOVIE.value -> onMovieClick(movie.id)
-                                        MediaType.TV.value -> onTvShowClicked(movie.id)
-                                        null -> onMovieClick(movie.id)
-                                    }
-                                }),
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data("https://image.tmdb.org/t/p/w500" + movie.posterPath)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = "",
-                            contentScale = ContentScale.FillWidth,
-                            placeholder = painterResource(R.drawable.placeholder_image),
-                            error = painterResource(R.drawable.placeholder_image)
+                    AnimatedContent(
+                        targetState = if (!state.searchMode) stringResource(R.string.popular_movies) else "Results for \"${state.inputedSearchQuery ?: ""}\""
+                    ) { text ->
+                        Text(
+                            text = text,
+                            fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                            fontWeight = FontWeight.Bold
                         )
                     }
+                }
 
-                    if (rowItems.size < 2) {
-                        Spacer(modifier = Modifier.weight(1f))
+                item {
+                    HorizontalDivider(modifier = Modifier.fillMaxWidth())
+                }
+
+                val apiResponse = if (!state.searchMode) state.apiResponse else state.searchResults
+
+                items(apiResponse.chunked(2)) { rowItems ->
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        rowItems.forEach { movie ->
+                            AsyncImage(
+                                modifier = Modifier
+                                    .width(240.dp)
+                                    .weight(1f)
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .clickable(onClick = dropUnlessResumed {
+                                        when (movie.mediaType) {
+                                            MediaType.MOVIE.value -> onMovieClick(movie.id)
+                                            MediaType.TV.value -> onTvShowClicked(movie.id)
+                                            null -> onMovieClick(movie.id)
+                                        }
+                                    }),
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data("https://image.tmdb.org/t/p/w500" + movie.posterPath)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "",
+                                contentScale = ContentScale.FillWidth,
+                                placeholder = painterResource(R.drawable.placeholder_image),
+                                error = painterResource(R.drawable.placeholder_image)
+                            )
+                        }
+
+                        if (rowItems.size < 2) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
                     }
                 }
+
             }
 
+        } else if (it == true) {
+            ErrorDisplay(state.error)
         }
-
-    } else {
-        ErrorDisplay(state.error)
     }
 
 }
