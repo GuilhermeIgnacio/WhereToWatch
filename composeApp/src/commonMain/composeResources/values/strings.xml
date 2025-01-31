@@ -11,6 +11,7 @@
     <string name="where_to_watch">Where to Watch</string>
     <string name="watch_providers_label_subscription">Subscription</string>
     <string name="watch_provider_label_buy">Buy</string>
+    <string name="watch_provider_label_rent">Rent</string>
     <string name="seasons">%1$s Seasons</string>
     <string name="episodes">%1$s Episodes</string>
     <string name="info_provided_by_justwatch">Info provided by JustWatch</string>
@@ -18,4 +19,5 @@
     <string name="bookmark_movie_content_description">Bookmark movie</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="watch_providers_error_snackbar_message">Failed to fetch watch providers. Please restart the app and try again. If the error persists, contact support.</string>
+    <string name="results_for">Results for "%1$s"</string>
 </resources>

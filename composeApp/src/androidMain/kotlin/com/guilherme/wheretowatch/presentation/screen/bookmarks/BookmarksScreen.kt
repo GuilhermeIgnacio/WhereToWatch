@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,7 +30,10 @@ import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.domain.MediaType
 import com.guilherme.wheretowatch.presentation.viewmodel.BookmarksViewModel
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import wheretowatch.composeapp.generated.resources.Res
+import wheretowatch.composeapp.generated.resources.bookmarks
 
 @Composable
 fun BookmarksScreen(
@@ -52,7 +54,7 @@ fun BookmarksScreen(
         item {
 
             Text(
-                text = stringResource(R.string.bookmarks),
+                text = stringResource(Res.string.bookmarks),
                 fontSize = MaterialTheme.typography.headlineLarge.fontSize,
                 fontWeight = FontWeight.Bold
             )

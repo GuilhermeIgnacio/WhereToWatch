@@ -39,7 +39,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -58,10 +57,17 @@ import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.Mo
 import com.guilherme.wheretowatch.presentation.viewmodel.MovieDetailsEvents
 import com.guilherme.wheretowatch.presentation.viewmodel.MovieDetailsViewModel
 import org.jetbrains.compose.resources.getString
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import wheretowatch.composeapp.generated.resources.Res
+import wheretowatch.composeapp.generated.resources.bookmark_movie_content_description
+import wheretowatch.composeapp.generated.resources.overview
+import wheretowatch.composeapp.generated.resources.remove_bookmark_content_description
 import wheretowatch.composeapp.generated.resources.return_button_content_description
+import wheretowatch.composeapp.generated.resources.watch_provider_label_buy
+import wheretowatch.composeapp.generated.resources.watch_provider_label_rent
 import wheretowatch.composeapp.generated.resources.watch_providers_error_snackbar_message
+import wheretowatch.composeapp.generated.resources.watch_providers_label_subscription
 
 @SuppressLint("NewApi")
 @Composable
@@ -130,7 +136,7 @@ fun MovieDetailsScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = stringResource(R.string.return_button_content_description)
+                                    contentDescription = stringResource(Res.string.return_button_content_description)
                                 )
                             }
 
@@ -148,9 +154,9 @@ fun MovieDetailsScreen(
                                     Icon(
                                         imageVector = if (it) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                                         contentDescription = if (it)
-                                            stringResource(R.string.remove_bookmark_content_description)
+                                            stringResource(Res.string.remove_bookmark_content_description)
                                         else
-                                            stringResource(R.string.bookmark_movie_content_description)
+                                            stringResource(Res.string.bookmark_movie_content_description)
                                     )
                                 }
                             }
@@ -184,7 +190,7 @@ fun MovieDetailsScreen(
 
                         Text(
                             modifier = Modifier.padding(horizontal = 8.dp),
-                            text = stringResource(R.string.overview),
+                            text = stringResource(Res.string.overview),
                             fontWeight = FontWeight.Bold,
                             fontSize = MaterialTheme.typography.headlineMedium.fontSize
                         )
@@ -204,19 +210,19 @@ fun MovieDetailsScreen(
 
                             val flatRate = movieWatchProviders.flatrate
                             WatchProvidersSection(
-                                providerLabel = stringResource(R.string.watch_providers_label_subscription),
+                                providerLabel = stringResource(Res.string.watch_providers_label_subscription),
                                 provider = flatRate
                             )
 
                             val buy = movieWatchProviders.buy
                             WatchProvidersSection(
-                                providerLabel = stringResource(R.string.watch_provider_label_buy),
+                                providerLabel = stringResource(Res.string.watch_provider_label_buy),
                                 provider = buy
                             )
 
                             val rent = movieWatchProviders.rent
                             WatchProvidersSection(
-                                providerLabel = stringResource(R.string.watch_provider_label_rent),
+                                providerLabel = stringResource(Res.string.watch_provider_label_rent),
                                 provider = rent
                             )
 
@@ -246,7 +252,7 @@ fun MovieDetailsScreen(
                     onClick = { onReturnNavigateButtonClicked() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = org.jetbrains.compose.resources.stringResource(Res.string.return_button_content_description)
+                        contentDescription = stringResource(Res.string.return_button_content_description)
                     )
                 }
 

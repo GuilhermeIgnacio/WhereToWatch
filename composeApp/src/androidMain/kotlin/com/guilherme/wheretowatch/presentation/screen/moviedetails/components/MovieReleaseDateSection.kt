@@ -5,11 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
+import org.jetbrains.compose.resources.stringResource
+import wheretowatch.composeapp.generated.resources.Res
+import wheretowatch.composeapp.generated.resources.release_date
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -32,7 +34,7 @@ fun MovieReleaseDateSection(movie: MovieDetailsResponse) {
         val formattedDate = date.format(formatter)
 
         Text(
-            text = stringResource(R.string.release_date),
+            text = stringResource(Res.string.release_date),
             fontWeight = FontWeight.Bold,
             fontSize = MaterialTheme.typography.bodyLarge.fontSize
         )

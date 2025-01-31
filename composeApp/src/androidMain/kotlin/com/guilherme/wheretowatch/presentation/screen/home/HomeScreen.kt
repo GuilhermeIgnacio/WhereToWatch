@@ -1,13 +1,10 @@
 package com.guilherme.wheretowatch.presentation.screen.home
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
@@ -30,13 +27,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -49,10 +44,12 @@ import com.guilherme.wheretowatch.domain.MediaType
 import com.guilherme.wheretowatch.presentation.components.ErrorDisplay
 import com.guilherme.wheretowatch.presentation.viewmodel.HomeEvents
 import com.guilherme.wheretowatch.presentation.viewmodel.HomeViewModel
-import org.jetbrains.compose.resources.vectorResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import wheretowatch.composeapp.generated.resources.Res
-import wheretowatch.composeapp.generated.resources.error_image
+import wheretowatch.composeapp.generated.resources.popular_movies
+import wheretowatch.composeapp.generated.resources.results_for
+import wheretowatch.composeapp.generated.resources.search_placeholder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,7 +86,9 @@ fun HomeScreen(
                                 onSearch = { onEvent(HomeEvents.OnSearch) },
                                 expanded = expanded,
                                 onExpandedChange = { expanded = it },
-                                placeholder = { Text(stringResource(R.string.search_placeholder)) },
+                                placeholder = {
+                                    Text(text = stringResource(Res.string.search_placeholder))
+                                },
                                 leadingIcon = {
 
                                     AnimatedContent(
@@ -125,7 +124,11 @@ fun HomeScreen(
                 item {
 
                     AnimatedContent(
-                        targetState = if (!state.searchMode) stringResource(R.string.popular_movies) else "Results for \"${state.inputedSearchQuery ?: ""}\""
+                        targetState = if (!state.searchMode) stringResource(
+                            Res.string.popular_movies
+                        ) else stringResource(
+                            Res.string.results_for, state.inputedSearchQuery ?: ""
+                        )
                     ) { text ->
                         Text(
                             text = text,

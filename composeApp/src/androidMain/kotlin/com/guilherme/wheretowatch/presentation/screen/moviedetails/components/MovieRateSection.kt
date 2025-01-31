@@ -6,10 +6,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.domain.model.MovieDetailsResponse
+import org.jetbrains.compose.resources.stringResource
+import wheretowatch.composeapp.generated.resources.Res
+import wheretowatch.composeapp.generated.resources.vote_average
 
 @Composable
 fun MovieRateSection(movie: MovieDetailsResponse) {
@@ -25,7 +27,7 @@ fun MovieRateSection(movie: MovieDetailsResponse) {
         )
 
         Text(
-            text = stringResource(R.string.vote_average, movie.voteCount),
+            text = stringResource(Res.string.vote_average, movie.voteCount),
             fontWeight = FontWeight.ExtraLight,
             fontSize = MaterialTheme.typography.bodyLarge.fontSize
         )

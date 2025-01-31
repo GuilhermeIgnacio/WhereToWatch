@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,10 +52,21 @@ import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
 import com.guilherme.wheretowatch.presentation.viewmodel.TvShowDetailsEvents
 import com.guilherme.wheretowatch.presentation.viewmodel.TvShowDetailsViewModel
 import org.jetbrains.compose.resources.getString
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import wheretowatch.composeapp.generated.resources.Res
+import wheretowatch.composeapp.generated.resources.bookmark_movie_content_description
+import wheretowatch.composeapp.generated.resources.episodes
+import wheretowatch.composeapp.generated.resources.overview
+import wheretowatch.composeapp.generated.resources.release_date
+import wheretowatch.composeapp.generated.resources.remove_bookmark_content_description
 import wheretowatch.composeapp.generated.resources.return_button_content_description
+import wheretowatch.composeapp.generated.resources.seasons
+import wheretowatch.composeapp.generated.resources.vote_average
+import wheretowatch.composeapp.generated.resources.watch_provider_label_buy
+import wheretowatch.composeapp.generated.resources.watch_provider_label_rent
 import wheretowatch.composeapp.generated.resources.watch_providers_error_snackbar_message
+import wheretowatch.composeapp.generated.resources.watch_providers_label_subscription
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -125,7 +135,7 @@ fun TVShowDetailsScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = stringResource(R.string.return_button_content_description)
+                                    contentDescription = stringResource(Res.string.return_button_content_description)
                                 )
                             }
 
@@ -144,9 +154,9 @@ fun TVShowDetailsScreen(
                                     Icon(
                                         imageVector = if (it) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                                         contentDescription = if (it)
-                                            stringResource(R.string.remove_bookmark_content_description)
+                                            stringResource(Res.string.remove_bookmark_content_description)
                                         else
-                                            stringResource(R.string.bookmark_movie_content_description)
+                                            stringResource(Res.string.bookmark_movie_content_description)
                                     )
                                 }
                             }
@@ -178,7 +188,7 @@ fun TVShowDetailsScreen(
 
 
                                 Text(
-                                    text = stringResource(R.string.release_date),
+                                    text = stringResource(Res.string.release_date),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = MaterialTheme.typography.bodyLarge.fontSize
                                 )
@@ -202,7 +212,7 @@ fun TVShowDetailsScreen(
                                 )
 
                                 Text(
-                                    text = stringResource(R.string.vote_average, tvShow.voteCount),
+                                    text = stringResource(Res.string.vote_average, tvShow.voteCount),
                                     fontWeight = FontWeight.ExtraLight,
                                     fontSize = MaterialTheme.typography.bodyLarge.fontSize
                                 )
@@ -210,14 +220,14 @@ fun TVShowDetailsScreen(
 
                             Column {
                                 Text(
-                                    text = stringResource(R.string.seasons, tvShow.numberOfSeasons),
+                                    text = stringResource(Res.string.seasons, tvShow.numberOfSeasons),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = MaterialTheme.typography.bodyLarge.fontSize
                                 )
 
                                 Text(
                                     text = stringResource(
-                                        R.string.episodes,
+                                        Res.string.episodes,
                                         tvShow.numberOfEpisodes
                                     ),
                                     fontWeight = FontWeight.ExtraLight,
@@ -231,7 +241,7 @@ fun TVShowDetailsScreen(
 
                         Text(
                             modifier = Modifier.padding(horizontal = 8.dp),
-                            text = stringResource(R.string.overview),
+                            text = stringResource(Res.string.overview),
                             fontWeight = FontWeight.Bold,
                             fontSize = MaterialTheme.typography.headlineMedium.fontSize
                         )
@@ -251,19 +261,19 @@ fun TVShowDetailsScreen(
 
                             val flatRate = tvShowWatchProviders.flatrate
                             WatchProvidersSection(
-                                providerLabel = stringResource(R.string.watch_providers_label_subscription),
+                                providerLabel = stringResource(Res.string.watch_providers_label_subscription),
                                 provider = flatRate
                             )
 
                             val buy = tvShowWatchProviders.buy
                             WatchProvidersSection(
-                                providerLabel = stringResource(R.string.watch_provider_label_buy),
+                                providerLabel = stringResource(Res.string.watch_provider_label_buy),
                                 provider = buy
                             )
 
                             val rent = tvShowWatchProviders.rent
                             WatchProvidersSection(
-                                providerLabel = stringResource(R.string.watch_provider_label_rent),
+                                providerLabel = stringResource(Res.string.watch_provider_label_rent),
                                 provider = rent
                             )
 
