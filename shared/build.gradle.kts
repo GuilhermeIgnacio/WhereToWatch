@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.pluginSerialization)
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.googleServices)
+//    alias(libs.plugins.firebaseCrashlytics)
 }
 
 sqldelight {
@@ -40,13 +42,14 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.sqldelight.driver.android)
             implementation("androidx.core:core-splashscreen:1.0.1")
+
+            //Firebase
+            implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.firebase.crashlytics)
+            implementation(libs.firebase.analytics)
         }
 
         commonMain.dependencies {
-            // put your Multiplatform dependencies here
-
-            implementation(libs.androidx.lifecycle.viewmodel)
-//            implementation(libs.androidx.lifecycle.runtime.compose)
 
             //Koin
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -73,7 +76,7 @@ kotlin {
             implementation(libs.material.icons.extended)
 
             //ViewModel
-//            implementation(libs.lifecycle.viewmodel.compose)
+            implementation(libs.androidx.lifecycle.viewmodel)
 
             //SqlDelight
             implementation(libs.sqldelight.coroutine.extensions)
