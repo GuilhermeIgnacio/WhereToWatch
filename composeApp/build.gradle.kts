@@ -36,6 +36,9 @@ kotlin {
             //Splash Screen
             implementation("androidx.core:core-splashscreen:1.0.1")
 
+            //AdMob
+            implementation("com.google.android.gms:play-services-ads:23.6.0")
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)

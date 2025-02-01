@@ -41,6 +41,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.domain.MediaType
+import com.guilherme.wheretowatch.presentation.components.AdvertView
 import com.guilherme.wheretowatch.presentation.components.ErrorDisplay
 import com.guilherme.wheretowatch.presentation.viewmodel.HomeEvents
 import com.guilherme.wheretowatch.presentation.viewmodel.HomeViewModel
@@ -78,6 +79,11 @@ fun HomeScreen(
                     .statusBarsPadding(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+
+                item {
+                    AdvertView(modifier = Modifier.fillMaxWidth())
+                }
+
                 item {
                     SearchBar(
                         modifier = Modifier.fillMaxWidth(),
