@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Onde Assistir</string>
     <string name="ad_id_banner">ca-app-pub-3940256099942544/9214589741</string>
+    <string name="home_bottom_navigation_item_label">Início</string>
+    <string name="bookmarks_bottom_navigation_item_label">Minha Lista</string>
     <string name="search_placeholder">Pesquise por Filmes e Séries</string>
     <string name="popular_movies">Filmes Populares</string>
     <string name="return_button_content_description">Botão voltar</string>

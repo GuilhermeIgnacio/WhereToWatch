@@ -23,6 +23,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.guilherme.wheretowatch.navigation.BookmarksScreen
 import com.guilherme.wheretowatch.navigation.BottomNavigationItem
 import com.guilherme.wheretowatch.navigation.HomeScreen
+import org.jetbrains.compose.resources.stringResource
+import wheretowatch.composeapp.generated.resources.Res
+import wheretowatch.composeapp.generated.resources.bookmarks_bottom_navigation_item_label
+import wheretowatch.composeapp.generated.resources.home_bottom_navigation_item_label
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
@@ -30,14 +34,14 @@ fun BottomNavigationBar(navController: NavHostController) {
 
     val items = listOf(
         BottomNavigationItem(
-            label = "Home",
+            label = stringResource(Res.string.home_bottom_navigation_item_label),
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home,
             route = "com.guilherme.wheretowatch.navigation.HomeScreen",
             onClick = { navController.navigate(HomeScreen) }
         ),
         BottomNavigationItem(
-            label = "Bookmarks",
+            label = stringResource(Res.string.bookmarks_bottom_navigation_item_label),
             selectedIcon = Icons.Filled.Bookmark,
             unselectedIcon = Icons.Outlined.BookmarkBorder,
             route = "com.guilherme.wheretowatch.navigation.BookmarksScreen",

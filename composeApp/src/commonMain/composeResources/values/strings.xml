@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">WhereToWatch</string>
     <string name="ad_id_banner">ca-app-pub-3940256099942544/9214589741</string>
+    <string name="home_bottom_navigation_item_label">Home</string>
+    <string name="bookmarks_bottom_navigation_item_label">Bookmarks</string>
     <string name="search_placeholder">Search Movies and Tv Series</string>
     <string name="popular_movies">Popular Movies</string>
     <string name="return_button_content_description">Return Button</string>
