@@ -22,6 +22,7 @@ data class MovieDetailsState(
     val movieWatchProviders: Country? = null,
     val isError: Boolean? = null,
     val error: ResponseError? = null,
+    val fetchWatchProvidersError: ResponseError? = null
 )
 
 sealed interface MovieDetailsEvents {
@@ -71,8 +72,7 @@ class MovieDetailsViewModel(
                 _state.update {
                     it.copy(
                         movieWatchProviders = result.data,
-                        isError = false,
-                        error = null
+                        fetchWatchProvidersError = null
                     )
                 }
             }
@@ -80,8 +80,7 @@ class MovieDetailsViewModel(
             is Result.Error -> {
                 _state.update {
                     it.copy(
-                        isError = true,
-                        error = result.error
+                        fetchWatchProvidersError = result.error
                     )
                 }
             }

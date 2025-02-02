@@ -1,7 +1,6 @@
 package com.guilherme.wheretowatch.presentation.screen.moviedetails
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Icon
@@ -39,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -171,7 +170,8 @@ fun MovieDetailsScreen(
                             text = movie.title,
                             fontWeight = FontWeight.Bold,
                             fontSize = MaterialTheme.typography.headlineLarge.fontSize,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            lineHeight = MaterialTheme.typography.headlineLarge.lineHeight
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -189,12 +189,14 @@ fun MovieDetailsScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        Text(
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            text = stringResource(Res.string.overview),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = MaterialTheme.typography.headlineMedium.fontSize
-                        )
+                        if (movie.overview.isNotBlank()) {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                text = stringResource(Res.string.overview),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = MaterialTheme.typography.headlineMedium.fontSize
+                            )
+                        }
 
                         Text(
                             modifier = Modifier.padding(horizontal = 8.dp),
@@ -203,7 +205,16 @@ fun MovieDetailsScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        if (movieWatchProviders != null) {
+                        val providers = listOf(
+                            movieWatchProviders?.flatrate,
+                            movieWatchProviders?.rent,
+                            movieWatchProviders?.buy,
+                            movieWatchProviders?.ads
+                        )
+
+                        val hasProviders = providers.any { it?.isNotEmpty() == true }
+
+                        if (movieWatchProviders != null && hasProviders) {
 
                             WhereToWatchHeader()
 
@@ -236,9 +247,7 @@ fun MovieDetailsScreen(
 
                         } else {
                             LaunchedEffect(Unit) {
-
-
-                                when (state.error) {
+                                when (state.fetchWatchProvidersError) {
                                     null -> {}
                                     else -> snackbarHostState.showSnackbar(getString(Res.string.watch_providers_error_snackbar_message))
                                 }

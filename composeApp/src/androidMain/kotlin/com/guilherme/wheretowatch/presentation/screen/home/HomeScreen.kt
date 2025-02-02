@@ -140,7 +140,8 @@ fun HomeScreen(
                             text = text,
                             fontSize = MaterialTheme.typography.headlineLarge.fontSize,
                             fontWeight = FontWeight.Bold,
-                            maxLines = 2
+                            maxLines = 2,
+                            lineHeight = MaterialTheme.typography.headlineLarge.lineHeight
                         )
                     }
                 }

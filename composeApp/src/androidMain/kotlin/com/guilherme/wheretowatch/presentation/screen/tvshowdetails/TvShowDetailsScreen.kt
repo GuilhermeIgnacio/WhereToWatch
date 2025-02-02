@@ -67,6 +67,7 @@ import wheretowatch.composeapp.generated.resources.watch_provider_label_buy
 import wheretowatch.composeapp.generated.resources.watch_provider_label_rent
 import wheretowatch.composeapp.generated.resources.watch_providers_error_snackbar_message
 import wheretowatch.composeapp.generated.resources.watch_providers_label_subscription
+import wheretowatch.composeapp.generated.resources.watch_with_ads
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -170,7 +171,8 @@ fun TVShowDetailsScreen(
                             text = tvShow.name,
                             fontWeight = FontWeight.Bold,
                             fontSize = MaterialTheme.typography.headlineLarge.fontSize,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            lineHeight = MaterialTheme.typography.headlineLarge.lineHeight
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -212,7 +214,10 @@ fun TVShowDetailsScreen(
                                 )
 
                                 Text(
-                                    text = stringResource(Res.string.vote_average, tvShow.voteCount),
+                                    text = stringResource(
+                                        Res.string.vote_average,
+                                        tvShow.voteCount
+                                    ),
                                     fontWeight = FontWeight.ExtraLight,
                                     fontSize = MaterialTheme.typography.bodyLarge.fontSize
                                 )
@@ -220,7 +225,10 @@ fun TVShowDetailsScreen(
 
                             Column {
                                 Text(
-                                    text = stringResource(Res.string.seasons, tvShow.numberOfSeasons),
+                                    text = stringResource(
+                                        Res.string.seasons,
+                                        tvShow.numberOfSeasons
+                                    ),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = MaterialTheme.typography.bodyLarge.fontSize
                                 )
@@ -239,12 +247,14 @@ fun TVShowDetailsScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        Text(
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            text = stringResource(Res.string.overview),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = MaterialTheme.typography.headlineMedium.fontSize
-                        )
+                        if (tvShow.overview.isNotBlank()) {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                text = stringResource(Res.string.overview),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = MaterialTheme.typography.headlineMedium.fontSize
+                            )
+                        }
 
                         Text(
                             modifier = Modifier.padding(horizontal = 8.dp),
@@ -253,7 +263,16 @@ fun TVShowDetailsScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        if (tvShowWatchProviders != null) {
+                        val providers = listOf(
+                            tvShowWatchProviders?.flatrate,
+                            tvShowWatchProviders?.rent,
+                            tvShowWatchProviders?.buy,
+                            tvShowWatchProviders?.ads
+                        )
+
+                        val hasProviders = providers.any { it?.isNotEmpty() == true }
+
+                        if (tvShowWatchProviders != null && hasProviders) {
 
                             WhereToWatchHeader()
 
@@ -278,7 +297,10 @@ fun TVShowDetailsScreen(
                             )
 
                             val ads = tvShowWatchProviders.ads
-                            WatchProvidersSection(providerLabel = "Ads", provider = ads)
+                            WatchProvidersSection(
+                                providerLabel = stringResource(Res.string.watch_with_ads),
+                                provider = ads
+                            )
 
 
                         } else if (state.fetchWatchProvidersError) {
