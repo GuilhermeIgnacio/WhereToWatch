@@ -186,25 +186,26 @@ fun TVShowDetailsScreen(
                             horizontalArrangement = Arrangement.SpaceAround
                         ) {
 
-                            Column {
+                            if (tvShow.firstAirDate.isNotBlank() && tvShow.lastAirDate.isNotBlank()) {
+                                Column {
 
-                                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                                val firstAirYear = LocalDate.parse(tvShow.firstAirDate, formatter)
-                                val lastAirYear = LocalDate.parse(tvShow.lastAirDate, formatter)
+                                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                                    val firstAirYear = LocalDate.parse(tvShow.firstAirDate, formatter)
+                                    val lastAirYear = LocalDate.parse(tvShow.lastAirDate, formatter)
 
+                                    Text(
+                                        text = stringResource(Res.string.release_date),
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                                    )
 
-                                Text(
-                                    text = stringResource(Res.string.release_date),
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                                )
+                                    Text(
+                                        text = "${firstAirYear.year} - ${lastAirYear.year}",
+                                        fontWeight = FontWeight.ExtraLight,
+                                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                                    )
 
-                                Text(
-                                    text = "${firstAirYear.year} - ${lastAirYear.year}",
-                                    fontWeight = FontWeight.ExtraLight,
-                                    fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                                )
-
+                                }
                             }
 
                             Column {
@@ -347,7 +348,8 @@ fun TVShowDetailsScreen(
                                     coroutineScope
                                 )
 
-                                ResponseError.NULL_VALUE -> { /*No Watch Providers*/ }
+                                ResponseError.NULL_VALUE -> { /*No Watch Providers*/
+                                }
 
                                 ResponseError.UNRESOLVED_ADDRESS -> triggerSnackBar(
                                     snackbarHostState, coroutineScope

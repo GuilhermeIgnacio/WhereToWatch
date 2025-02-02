@@ -10,36 +10,36 @@ data class TvShowDetailsResponse(
     val id: Int,
 
     @SerialName("poster_path")
-    val posterPath: String,
+    val posterPath: String = "",
 
     @SerialName("original_name")
-    val originalName: String,
+    val originalName: String = "",
 
     @SerialName("name")
-    val name: String,
+    val name: String = "",
 
     @SerialName("overview")
-    val overview: String,
+    val overview: String = "",
 
     @SerialName("number_of_episodes")
-    val numberOfEpisodes: Int,
+    val numberOfEpisodes: Int = 0,
 
     @SerialName("number_of_seasons")
-    val numberOfSeasons: Int,
+    val numberOfSeasons: Int = 0,
 
     @SerialName("first_air_date")
-    val firstAirDate: String,
+    val firstAirDate: String = "",
 
     @SerialName("last_air_date")
-    val lastAirDate: String,
+    val lastAirDate: String = "",
 
     @SerialName("status")
-    val status: String,
+    val status: String = "",
 
     @SerialName("vote_average")
-    val voteAverage: Float,
+    val voteAverage: Float = 0f,
 
     @SerialName("vote_count")
-    val voteCount: Int
+    val voteCount: Int = 0
 
 )

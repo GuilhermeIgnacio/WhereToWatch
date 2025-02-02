@@ -40,6 +40,7 @@ class TheMovieDatabaseApiServiceImpl : TheMovieDatabaseApiService {
             json(
                 Json {
                     ignoreUnknownKeys = true
+                    coerceInputValues = true
                 }
             )
 
