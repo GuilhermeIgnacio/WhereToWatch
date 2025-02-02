@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Onde Assistir</string>
+    <string name="ad_id_banner">ca-app-pub-3940256099942544/9214589741</string>
+    <string name="search_placeholder">Pesquise por Filmes e Séries</string>
+    <string name="popular_movies">Filmes Populares</string>
+    <string name="return_button_content_description">Botão voltar</string>
+    <string name="release_date">Data de Estreia</string>
+    <string name="vote_average">%1$s votos</string>
+    <string name="duration_time">Duração</string>
+    <string name="minutes">%1$s minutos</string>
+    <string name="overview">Sinopse</string>
+    <string name="where_to_watch">Onde Assistir</string>
+    <string name="watch_providers_label_subscription">Assinatura</string>
+    <string name="watch_provider_label_buy">Comprar</string>
+    <string name="watch_provider_label_rent">Alugar</string>
+    <string name="watch_with_ads">Assista com anúncios</string>
+    <string name="seasons">%1$s Temporadas</string>
+    <string name="episodes">%1$s Episódios</string>
+    <string name="info_provided_by_justwatch">Informações fornecidas por JustWatch</string>
+    <string name="remove_bookmark_content_description">Remover da minha lista</string>
+    <string name="bookmark_movie_content_description">Adicionar à minha lista</string>
+    <string name="bookmarks">Minha Lista</string>
+    <string name="watch_providers_error_snackbar_message">Falha ao buscar provedores de exibição. Reinicie o aplicativo e tente novamente. Se o erro persistir, entre em contato com o suporte.</string>
+    <string name="results_for">Resultados para "%1$s"</string>
+
+    <string name="oops_something_went_wrong">Oops! Algo deu errado</string>
+    <string name="we_couldnt_process_the_request_please_restart_and_try_again">Não foi possível processar a solicitação. Reinicie e tente novamente.</string>
+    <string name="error_display_unauthorized">A API retornou um erro (Não autorizado). Reinicie o app e tente novamente. Se o problema persistir, entre em contato com o suporte.</string>
+    <string name="error_display_forbidden">A API retornou um erro (Proibido). Reinicie o app e tente novamente. Se o problema persistir, entre em contato com o suporte.</string>
+    <string name="error_display_not_found">Conteúdo não encontrado. Se o problema persistir, entre em contato com o suporte.</string>
+    <string name="error_display_method_not_allowed">A API retornou um erro (Método não permitido). Reinicie o app e tente novamente. Se o problema persistir, entre em contato com o suporte.</string>
+    <string name="error_display_request_timeout">A solicitação demorou muito para responder. Verifique sua conexão e tente novamente.</string>
+    <string name="error_display_too_many_requests">Você está enviando solicitações muito rápido! Aguarde um momento e tente novamente.</string>
+    <string name="error_display_null_value">A API retornou valores nulos. Reinicie o app e tente novamente. Se o problema persistir, entre em contato com o suporte.</string>
+    <string name="error_display_unresolved_address">Parece que você está offline. Verifique sua conexão com a internet e tente novamente.</string>
+    <string name="error_display_unknown">Ocorreu um erro desconhecido. Reinicie o app e tente novamente.</string>
+
+</resources>

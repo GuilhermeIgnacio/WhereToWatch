@@ -13,6 +13,7 @@
     <string name="watch_providers_label_subscription">Subscription</string>
     <string name="watch_provider_label_buy">Buy</string>
     <string name="watch_provider_label_rent">Rent</string>
+    <string name="watch_with_ads">Watch with ads</string>
     <string name="seasons">%1$s Seasons</string>
     <string name="episodes">%1$s Episodes</string>
     <string name="info_provided_by_justwatch">Info provided by JustWatch</string>
@@ -21,4 +22,17 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="watch_providers_error_snackbar_message">Failed to fetch watch providers. Please restart the app and try again. If the error persists, contact support.</string>
     <string name="results_for">Results for "%1$s"</string>
+
+    <string name="oops_something_went_wrong">Oops! Something Went Wrong</string>
+    <string name="we_couldnt_process_the_request_please_restart_and_try_again">We couldn't process the request. Please restart and try again.</string>
+    <string name="error_display_unauthorized">The API returned an error (Unauthorized). Please restart the app and try again. If the issue persists, contact support.</string>
+    <string name="error_display_forbidden">The API returned an error (Forbidden). Please restart the app and try again. If the issue persists, contact support.</string>
+    <string name="error_display_not_found">Content not found. If the issue persists, please contact support.</string>
+    <string name="error_display_method_not_allowed">The API returned an error (Method not allowed). Please restart the app and try again. If the issue persists, contact support.</string>
+    <string name="error_display_request_timeout">The request took too long to respond. Please check your connection and try again.</string>
+    <string name="error_display_too_many_requests">You're sending requests too quickly! Please wait a moment and try again.</string>
+    <string name="error_display_null_value">The API returned null values. Please restart the app and try again. If the issue persists, contact support.</string>
+    <string name="error_display_unresolved_address">It looks like you're offline. Please check your internet connection and try again.</string>
+    <string name="error_display_unknown">An unknown error occurred. Please restart the app and try again</string>
+
 </resources>

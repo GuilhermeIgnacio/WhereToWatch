@@ -68,6 +68,7 @@ import wheretowatch.composeapp.generated.resources.watch_provider_label_buy
 import wheretowatch.composeapp.generated.resources.watch_provider_label_rent
 import wheretowatch.composeapp.generated.resources.watch_providers_error_snackbar_message
 import wheretowatch.composeapp.generated.resources.watch_providers_label_subscription
+import wheretowatch.composeapp.generated.resources.watch_with_ads
 
 @SuppressLint("NewApi")
 @Composable
@@ -227,7 +228,10 @@ fun MovieDetailsScreen(
                             )
 
                             val ads = movieWatchProviders.ads
-                            WatchProvidersSection(providerLabel = "Ads", provider = ads)
+                            WatchProvidersSection(
+                                providerLabel = stringResource(Res.string.watch_with_ads),
+                                provider = ads
+                            )
 
 
                         } else {
