@@ -49,6 +49,7 @@ import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.data.toMovieData
 import com.guilherme.wheretowatch.domain.ResponseError
+import com.guilherme.wheretowatch.presentation.components.AdvertView
 import com.guilherme.wheretowatch.presentation.components.ErrorDisplay
 import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
@@ -248,6 +249,7 @@ fun MovieDetailsScreen(
                                 provider = ads
                             )
 
+                            Spacer(modifier = Modifier.height(16.dp))
 
                         } else {
 
@@ -267,6 +269,8 @@ fun MovieDetailsScreen(
                                 null -> {}
                             }
                         }
+
+                        AdvertView()
 
                     }
                 }

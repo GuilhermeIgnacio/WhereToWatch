@@ -41,6 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
@@ -48,6 +49,7 @@ import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.data.toMovieData
 import com.guilherme.wheretowatch.domain.ResponseError
+import com.guilherme.wheretowatch.presentation.components.AdvertView
 import com.guilherme.wheretowatch.presentation.components.ErrorDisplay
 import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
@@ -190,7 +192,8 @@ fun TVShowDetailsScreen(
                                 Column {
 
                                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                                    val firstAirYear = LocalDate.parse(tvShow.firstAirDate, formatter)
+                                    val firstAirYear =
+                                        LocalDate.parse(tvShow.firstAirDate, formatter)
                                     val lastAirYear = LocalDate.parse(tvShow.lastAirDate, formatter)
 
                                     Text(
@@ -307,6 +310,7 @@ fun TVShowDetailsScreen(
                                 provider = ads
                             )
 
+                            Spacer(modifier = Modifier.height(16.dp))
 
                         } else {
 
@@ -363,6 +367,8 @@ fun TVShowDetailsScreen(
                             }
 
                         }
+
+                        AdvertView()
 
                     }
                 }
