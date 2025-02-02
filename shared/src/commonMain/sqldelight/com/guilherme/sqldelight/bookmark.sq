@@ -1,11 +1,12 @@
 CREATE TABLE Bookmark(
     id INTEGER PRIMARY KEY NOT NULL,
     posterPath TEXT NOT NULL,
-    mediaType TEXT NOT NULL
+    mediaType TEXT NOT NULL,
+    createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 selectAll:
-SELECT * FROM Bookmark;
+SELECT * FROM Bookmark ORDER BY createdAt DESC;
 
 insert:
 INSERT INTO Bookmark(id, posterPath, mediaType)
