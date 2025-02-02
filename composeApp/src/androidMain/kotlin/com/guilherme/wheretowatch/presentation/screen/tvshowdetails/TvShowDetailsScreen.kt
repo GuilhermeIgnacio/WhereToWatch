@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,11 +47,14 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.data.toMovieData
+import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.presentation.components.ErrorDisplay
 import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
 import com.guilherme.wheretowatch.presentation.viewmodel.TvShowDetailsEvents
 import com.guilherme.wheretowatch.presentation.viewmodel.TvShowDetailsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -303,10 +307,59 @@ fun TVShowDetailsScreen(
                             )
 
 
-                        } else if (state.fetchWatchProvidersError) {
-                            LaunchedEffect(Unit) {
-                                snackbarHostState.showSnackbar(getString(Res.string.watch_providers_error_snackbar_message))
+                        } else {
+
+                            val coroutineScope = rememberCoroutineScope()
+
+                            when (state.fetchWatchProvidersError) {
+                                ResponseError.BAD_REQUEST -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.UNAUTHORIZED -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.FORBIDDEN -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.NOT_FOUND -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.METHOD_NOT_ALLOWED -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.REQUEST_TIMEOUT -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.TOO_MANY_REQUESTS -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.NULL_VALUE -> { /*No Watch Providers*/ }
+
+                                ResponseError.UNRESOLVED_ADDRESS -> triggerSnackBar(
+                                    snackbarHostState, coroutineScope
+                                )
+
+                                ResponseError.UNKNOWN -> triggerSnackBar(
+                                    snackbarHostState, coroutineScope
+                                )
+
+                                null -> {}
                             }
+
                         }
 
                     }
@@ -320,12 +373,19 @@ fun TVShowDetailsScreen(
                     onClick = { onReturnButtonClicked() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = org.jetbrains.compose.resources.stringResource(Res.string.return_button_content_description)
+                        contentDescription = stringResource(Res.string.return_button_content_description)
                     )
                 }
                 ErrorDisplay(state.error)
             }
         }
+    }
+
+}
+
+private fun triggerSnackBar(snackbarHostState: SnackbarHostState, coroutineScope: CoroutineScope) {
+    coroutineScope.launch {
+        snackbarHostState.showSnackbar(getString(Res.string.watch_providers_error_snackbar_message))
     }
 
 }

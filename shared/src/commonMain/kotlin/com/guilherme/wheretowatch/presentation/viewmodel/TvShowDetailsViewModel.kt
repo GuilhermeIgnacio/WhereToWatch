@@ -20,7 +20,7 @@ data class TvShowDetailsState(
     val bookmarkedTvShows: List<MediaData> = emptyList(),
     val tvShowDetails: TvShowDetailsResponse? = null,
     val tvShowWatchProviders: Country? = null,
-    val fetchWatchProvidersError: Boolean = false,
+    val fetchWatchProvidersError: ResponseError? = null,
     val isError: Boolean? = null,
     val error: ResponseError? = null,
 )
@@ -70,13 +70,14 @@ class TvShowDetailsViewModel(
                 _state.update {
                     it.copy(
                         tvShowWatchProviders = result.data,
-                        fetchWatchProvidersError = false
+                        fetchWatchProvidersError = null
                     )
                 }
             }
 
             is Result.Error -> {
-                _state.update { it.copy(fetchWatchProvidersError = true) }
+                _state.update { it.copy(fetchWatchProvidersError = result.error) }
+                println(result.error.name)
             }
         }
     }
