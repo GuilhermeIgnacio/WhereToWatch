@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WhereToWatch</string>
+    <string name="app_name">Where To Watch</string>
     <string name="search_placeholder">Search Movies and Tv Series</string>
     <string name="popular_movies">Popular Movies</string>
     <string name="return_button_content_description">Return Button</string>
