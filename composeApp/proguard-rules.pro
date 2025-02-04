@@ -1,0 +1,2 @@
+-dontwarn android.media.LoudnessCodecController$OnLoudnessCodecUpdateListener
+-dontwarn android.media.LoudnessCodecController

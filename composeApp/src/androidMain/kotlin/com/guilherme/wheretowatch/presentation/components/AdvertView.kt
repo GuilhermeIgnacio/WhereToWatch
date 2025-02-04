@@ -27,7 +27,7 @@ import wheretowatch.composeapp.generated.resources.return_button_content_descrip
 
 @Composable
 fun AdvertView(modifier: Modifier = Modifier) {
-    val isInEditMode = LocalInspectionMode.current
+    /*val isInEditMode = LocalInspectionMode.current
     if (isInEditMode) {
         Text(
             modifier = modifier
@@ -53,5 +53,5 @@ fun AdvertView(modifier: Modifier = Modifier) {
             }
         )
 
-    }
+    }*/
 }
