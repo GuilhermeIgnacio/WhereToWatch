@@ -20,9 +20,12 @@ data class MovieDetailsState(
     val bookmarkedMovies: List<MediaData> = emptyList(),
     val movieDetails: MovieDetailsResponse? = null,
     val movieWatchProviders: Country? = null,
+    val isMovieDetailsLoading: Boolean = true,
+    val isMovieWatchProvidersLoading: Boolean = true,
+    val isBookmarkedMoviesLoading: Boolean = true,
     val isError: Boolean? = null,
     val error: ResponseError? = null,
-    val fetchWatchProvidersError: ResponseError? = null
+    val fetchWatchProvidersError: ResponseError? = null,
 )
 
 sealed interface MovieDetailsEvents {
@@ -38,70 +41,84 @@ class MovieDetailsViewModel(
     val state = _state.asStateFlow()
 
     init {
+        fetchBookmarkedMovies()
+    }
+
+    fun fetchMovieDetailsData(id: Int) {
+        fetchMovieDetails(id)
+        fetchMovieWatchProviders(id)
+    }
+
+    private fun fetchMovieDetails(id: Int) {
         viewModelScope.launch {
-            fetchBookmarkedMovies()
+            when (val result = tmdbApiService.fetchMovieDetails(id)) {
+                is Result.Success -> {
+                    _state.update {
+                        it.copy(
+                            movieDetails = result.data,
+                            isError = false,
+                            error = null
+                        )
+                    }
+                }
+
+                is Result.Error -> {
+                    _state.update {
+                        it.copy(
+                            isError = true,
+                            error = result.error
+                        )
+                    }
+                }
+            }
+        }.invokeOnCompletion {
+            _state.update { it.copy(isMovieDetailsLoading = false) }
         }
     }
 
-    suspend fun fetchMovieDetails(id: Int) {
-        when (val result = tmdbApiService.fetchMovieDetails(id)) {
-            is Result.Success -> {
-                _state.update {
-                    it.copy(
-                        movieDetails = result.data,
-                        isError = false,
-                        error = null
-                    )
+    private fun fetchMovieWatchProviders(id: Int) {
+        viewModelScope.launch {
+            when (val result = tmdbApiService.fetchMovieProviders(id)) {
+                is Result.Success -> {
+                    _state.update {
+                        it.copy(
+                            movieWatchProviders = result.data,
+                            fetchWatchProvidersError = null
+                        )
+                    }
                 }
-            }
 
-            is Result.Error -> {
-                _state.update {
-                    it.copy(
-                        isError = true,
-                        error = result.error
-                    )
+                is Result.Error -> {
+                    _state.update {
+                        it.copy(
+                            fetchWatchProvidersError = result.error
+                        )
+                    }
                 }
             }
+        }.invokeOnCompletion {
+            _state.update { it.copy(isMovieWatchProvidersLoading = false) }
         }
     }
 
-    suspend fun fetchMovieWatchProviders(id: Int) {
-        when (val result = tmdbApiService.fetchMovieProviders(id)) {
-            is Result.Success -> {
-                _state.update {
-                    it.copy(
-                        movieWatchProviders = result.data,
-                        fetchWatchProvidersError = null
-                    )
+    private fun fetchBookmarkedMovies() {
+        viewModelScope.launch {
+            localDatabase.getBookmarks()
+                .map {
+                    it.filter {
+                        it.mediaType == MediaType.MOVIE.value
+                    }
                 }
-            }
-
-            is Result.Error -> {
-                _state.update {
-                    it.copy(
-                        fetchWatchProvidersError = result.error
-                    )
+                .collect { list ->
+                    _state.update {
+                        it.copy(
+                            bookmarkedMovies = list
+                        )
+                    }
                 }
-            }
+        }.invokeOnCompletion {
+            _state.update { it.copy(isBookmarkedMoviesLoading = false) }
         }
-
-    }
-
-    private suspend fun fetchBookmarkedMovies() {
-        localDatabase.getBookmarks()
-            .map {
-                it.filter {
-                    it.mediaType == MediaType.MOVIE.value
-                }
-            }
-            .collect { list ->
-                _state.update {
-                    it.copy(
-                        bookmarkedMovies = list
-                    )
-                }
-            }
     }
 
     fun onEvent(event: MovieDetailsEvents) {

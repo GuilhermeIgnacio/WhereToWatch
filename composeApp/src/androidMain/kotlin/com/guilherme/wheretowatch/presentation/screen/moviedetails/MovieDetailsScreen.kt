@@ -51,6 +51,7 @@ import com.guilherme.wheretowatch.data.toMovieData
 import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.presentation.components.AdvertView
 import com.guilherme.wheretowatch.presentation.components.ErrorDisplay
+import com.guilherme.wheretowatch.presentation.components.LoadingIcon
 import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
 import com.guilherme.wheretowatch.presentation.screen.moviedetails.components.MovieDurationSection
@@ -82,10 +83,11 @@ fun MovieDetailsScreen(
 ) {
 
     val viewModel = koinViewModel<MovieDetailsViewModel>()
+
     LaunchedEffect(Unit) {
-        viewModel.fetchMovieDetails(movieId)
-        viewModel.fetchMovieWatchProviders(movieId)
+        viewModel.fetchMovieDetailsData(movieId)
     }
+
     val state by viewModel.state.collectAsStateWithLifecycle()
     val onEvent = viewModel::onEvent
 
@@ -97,6 +99,244 @@ fun MovieDetailsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     AnimatedContent(
+        targetState = state.isMovieDetailsLoading && state.isMovieWatchProvidersLoading && state.isBookmarkedMoviesLoading
+    ) {
+
+        if (it) {
+            LoadingIcon()
+        }
+
+        if (!it && state.isError == false) {
+            Scaffold(
+                snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+            ) { _ ->
+                movieDetails?.let { movie ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                            .verticalScroll(verticalScroll)
+                    ) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(
+                                        RoundedCornerShape(
+                                            bottomStart = 24.dp,
+                                            bottomEnd = 24.dp
+                                        )
+                                    ),
+                                contentScale = ContentScale.FillWidth,
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data("https://image.tmdb.org/t/p/original" + movie.posterPath)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "${movie.title} Poster",
+                                placeholder = painterResource(R.drawable.placeholder_image),
+                                error = painterResource(R.drawable.placeholder_image)
+                            )
+
+                            IconButton(
+                                modifier = Modifier
+                                    .align(Alignment.TopStart)
+                                    .statusBarsPadding(),
+                                onClick = { onReturnNavigateButtonClicked() }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = stringResource(Res.string.return_button_content_description)
+                                )
+                            }
+
+                            IconButton(
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .statusBarsPadding(),
+                                onClick = {
+                                    onEvent(MovieDetailsEvents.BookmarkMovie(movie.toMovieData()))
+                                }
+                            ) {
+                                Crossfade(
+                                    targetState = movie.toMovieData() in state.bookmarkedMovies
+                                ) {
+                                    Icon(
+                                        imageVector = if (it) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                                        contentDescription = if (it)
+                                            stringResource(Res.string.remove_bookmark_content_description)
+                                        else
+                                            stringResource(Res.string.bookmark_movie_content_description)
+                                    )
+                                }
+                            }
+
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            text = movie.title,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                            textAlign = TextAlign.Center,
+                            lineHeight = MaterialTheme.typography.headlineLarge.lineHeight
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            MovieReleaseDateSection(movie)
+
+                            MovieRateSection(movie)
+
+                            MovieDurationSection(movie)
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        if (movie.overview.isNotBlank()) {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                text = stringResource(Res.string.overview),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = MaterialTheme.typography.headlineMedium.fontSize
+                            )
+                        }
+
+                        Text(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            text = movie.overview
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        val providers = listOf(
+                            movieWatchProviders?.flatrate,
+                            movieWatchProviders?.rent,
+                            movieWatchProviders?.buy,
+                            movieWatchProviders?.ads
+                        )
+
+                        val hasProviders = providers.any { it?.isNotEmpty() == true }
+
+                        if (movieWatchProviders != null && hasProviders) {
+
+                            WhereToWatchHeader()
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            val flatRate = movieWatchProviders.flatrate
+                            WatchProvidersSection(
+                                providerLabel = stringResource(Res.string.watch_providers_label_subscription),
+                                provider = flatRate
+                            )
+
+                            val buy = movieWatchProviders.buy
+                            WatchProvidersSection(
+                                providerLabel = stringResource(Res.string.watch_provider_label_buy),
+                                provider = buy
+                            )
+
+                            val rent = movieWatchProviders.rent
+                            WatchProvidersSection(
+                                providerLabel = stringResource(Res.string.watch_provider_label_rent),
+                                provider = rent
+                            )
+
+                            val ads = movieWatchProviders.ads
+                            WatchProvidersSection(
+                                providerLabel = stringResource(Res.string.watch_with_ads),
+                                provider = ads
+                            )
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                        } else {
+
+                            val coroutineScope = rememberCoroutineScope()
+
+                            when (state.fetchWatchProvidersError) {
+                                ResponseError.BAD_REQUEST -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.UNAUTHORIZED -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.FORBIDDEN -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.NOT_FOUND -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.METHOD_NOT_ALLOWED -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.REQUEST_TIMEOUT -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.TOO_MANY_REQUESTS -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.NULL_VALUE -> { /*No Watch Providers*/
+                                }
+
+                                ResponseError.UNRESOLVED_ADDRESS -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                ResponseError.UNKNOWN -> triggerSnackBar(
+                                    snackbarHostState,
+                                    coroutineScope
+                                )
+
+                                null -> {}
+                            }
+                        }
+
+                        AdvertView()
+
+                    }
+                }
+            }
+        } else if (!it && state.isError == true) {
+            Box {
+
+                IconButton(
+                    modifier = Modifier.statusBarsPadding(),
+                    onClick = { onReturnNavigateButtonClicked() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(Res.string.return_button_content_description)
+                    )
+                }
+
+                ErrorDisplay(state.error)
+            }
+        }
+    }
+
+    /*AnimatedContent(
         targetState = state.isError, label = ""
     ) {
 
@@ -263,7 +503,7 @@ fun MovieDetailsScreen(
                                 ResponseError.METHOD_NOT_ALLOWED -> triggerSnackBar(snackbarHostState, coroutineScope)
                                 ResponseError.REQUEST_TIMEOUT -> triggerSnackBar(snackbarHostState, coroutineScope)
                                 ResponseError.TOO_MANY_REQUESTS -> triggerSnackBar(snackbarHostState, coroutineScope)
-                                ResponseError.NULL_VALUE -> { /*No Watch Providers*/ }
+                                ResponseError.NULL_VALUE -> { *//*No Watch Providers*//* }
                                 ResponseError.UNRESOLVED_ADDRESS -> triggerSnackBar(snackbarHostState, coroutineScope)
                                 ResponseError.UNKNOWN -> triggerSnackBar(snackbarHostState, coroutineScope)
                                 null -> {}
@@ -290,7 +530,7 @@ fun MovieDetailsScreen(
                 ErrorDisplay(state.error)
             }
         }
-    }
+    }*/
 
 }
 
