@@ -21,6 +21,11 @@ data class TvShowDetailsState(
     val tvShowDetails: TvShowDetailsResponse? = null,
     val tvShowWatchProviders: Country? = null,
     val fetchWatchProvidersError: ResponseError? = null,
+
+    val isTvShowDetailsLoading: Boolean = true,
+    val isTvShowWatchProvidersLoading: Boolean = true,
+    val isBookmarkedTvShowsLoading: Boolean = true,
+
     val isError: Boolean? = null,
     val error: ResponseError? = null,
 )
@@ -43,59 +48,78 @@ class TvShowDetailsViewModel(
         }
     }
 
-    suspend fun fetchTvShowDetails(id: Int) {
-        when (val result = tmdbApiService.fetchTvShowDetails(id)) {
-            is Result.Success -> {
-                _state.update {
-                    it.copy(
-                        tvShowDetails = result.data,
-                        isError = false,
-                        error = null
-                    )
+    fun fetchTvShowData(id: Int) {
+        fetchTvShowDetails(id)
+        fetchTvShowWatchProviders(id)
+    }
+
+    private fun fetchTvShowDetails(id: Int) {
+        viewModelScope.launch {
+            when (val result = tmdbApiService.fetchTvShowDetails(id)) {
+                is Result.Success -> {
+                    _state.update {
+                        it.copy(
+                            tvShowDetails = result.data,
+                            isError = false,
+                            error = null
+                        )
+                    }
+                }
+
+                is Result.Error -> {
+                    _state.update {
+                        it.copy(
+                            isError = true,
+                            error = result.error
+                        )
+                    }
                 }
             }
-
-            is Result.Error -> {
-                _state.update{it.copy(
-                    isError = true,
-                    error = result.error
-                )}
-            }
+        }.invokeOnCompletion {
+            _state.update { it.copy(isTvShowDetailsLoading = false) }
         }
     }
 
-    suspend fun fetchTvShowWatchProviders(id: Int) {
-        when (val result = tmdbApiService.fetchTvShowWatchProviders(id)) {
-            is Result.Success -> {
-                _state.update {
-                    it.copy(
-                        tvShowWatchProviders = result.data,
-                        fetchWatchProvidersError = null
-                    )
+    private fun fetchTvShowWatchProviders(id: Int) {
+        viewModelScope.launch {
+            when (val result = tmdbApiService.fetchTvShowWatchProviders(id)) {
+                is Result.Success -> {
+                    _state.update {
+                        it.copy(
+                            tvShowWatchProviders = result.data,
+                            fetchWatchProvidersError = null
+                        )
+                    }
+                }
+
+                is Result.Error -> {
+                    _state.update { it.copy(fetchWatchProvidersError = result.error) }
+                    println(result.error.name)
                 }
             }
-
-            is Result.Error -> {
-                _state.update { it.copy(fetchWatchProvidersError = result.error) }
-                println(result.error.name)
-            }
+        }.invokeOnCompletion {
+            _state.update { it.copy(isTvShowWatchProvidersLoading = false) }
         }
     }
 
-    private suspend fun fetchBookmarkedTvShows() {
-        localDatabase.getBookmarks()
-            .map {
-                it.filter {
-                    it.mediaType == MediaType.TV.value
+    private fun fetchBookmarkedTvShows() {
+        viewModelScope.launch {
+            localDatabase.getBookmarks()
+                .map {
+                    it.filter {
+                        it.mediaType == MediaType.TV.value
+                    }
                 }
-            }
-            .collect { list ->
-                _state.update {
-                    it.copy(
-                        bookmarkedTvShows = list
-                    )
+                .collect { list ->
+                    _state.update {
+                        it.copy(
+                            bookmarkedTvShows = list
+                        )
+                    }
                 }
-            }
+        }.invokeOnCompletion {
+            _state.update { it.copy(isBookmarkedTvShowsLoading = false) }
+        }
     }
 
     fun onEvent(event: TvShowDetailsEvents) {

@@ -51,6 +51,7 @@ import com.guilherme.wheretowatch.data.toMovieData
 import com.guilherme.wheretowatch.domain.ResponseError
 import com.guilherme.wheretowatch.presentation.components.AdvertView
 import com.guilherme.wheretowatch.presentation.components.ErrorDisplay
+import com.guilherme.wheretowatch.presentation.components.LoadingIcon
 import com.guilherme.wheretowatch.presentation.components.WatchProvidersSection
 import com.guilherme.wheretowatch.presentation.components.WhereToWatchHeader
 import com.guilherme.wheretowatch.presentation.viewmodel.TvShowDetailsEvents
@@ -88,9 +89,8 @@ fun TVShowDetailsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val onEvent = viewModel::onEvent
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchTvShowDetails(tvShowId)
-        viewModel.fetchTvShowWatchProviders(tvShowId)
+    LaunchedEffect(tvShowId) {
+        viewModel.fetchTvShowData(tvShowId)
     }
 
     val tvShowDetails = state.tvShowDetails
@@ -100,10 +100,15 @@ fun TVShowDetailsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     AnimatedContent(
-        targetState = state.isError, label = ""
+        targetState = state.isTvShowDetailsLoading && state.isTvShowWatchProvidersLoading && state.isBookmarkedTvShowsLoading,
+        label = ""
     ) {
 
-        if (it == false) {
+        if (it) {
+            LoadingIcon()
+        }
+
+        if (!it && state.isError == false) {
             Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { _ ->
                 tvShowDetails?.let { tvShow ->
                     Column(
@@ -373,7 +378,7 @@ fun TVShowDetailsScreen(
                     }
                 }
             }
-        } else if (it == true) {
+        } else if (!it && state.isError == true) {
             Box {
 
                 IconButton(
