@@ -43,6 +43,7 @@ import com.guilherme.wheretowatch.R
 import com.guilherme.wheretowatch.domain.MediaType
 import com.guilherme.wheretowatch.presentation.components.AdvertView
 import com.guilherme.wheretowatch.presentation.components.ErrorDisplay
+import com.guilherme.wheretowatch.presentation.components.LoadingIcon
 import com.guilherme.wheretowatch.presentation.viewmodel.HomeEvents
 import com.guilherme.wheretowatch.presentation.viewmodel.HomeViewModel
 import org.jetbrains.compose.resources.stringResource
@@ -66,13 +67,13 @@ fun HomeScreen(
     var expanded by rememberSaveable { mutableStateOf(false) }
 
 
+    AnimatedContent(targetState = state.isLoading) {
 
-    AnimatedContent(
-        targetState = state.isError, label = ""
-    ) {
+        if (it) {
+            LoadingIcon()
+        }
 
-        if (it == false) {
-
+        if (!it && state.isError == false) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -188,10 +189,23 @@ fun HomeScreen(
                 }
 
             }
-
-        } else if (it == true) {
+        } else if (!it && state.isError == true) {
             ErrorDisplay(state.error)
         }
+
     }
+
+
+    /*AnimatedContent(
+        targetState = state.isError, label = ""
+    ) {
+
+        if (it == false) {
+
+
+
+        } else if (it == true) {
+        }
+    }*/
 
 }

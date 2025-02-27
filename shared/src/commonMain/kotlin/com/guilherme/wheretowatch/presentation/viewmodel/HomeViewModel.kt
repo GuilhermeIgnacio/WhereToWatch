@@ -19,6 +19,7 @@ data class HomeState(
     val inputedSearchQuery: String? = null,
     val searchResults: List<MediaData> = emptyList(),
     val searchMode: Boolean = false,
+    val isLoading: Boolean = true,
 )
 
 sealed interface HomeEvents {
@@ -51,12 +52,16 @@ class HomeViewModel(
                 }
 
                 is Result.Error -> {
-                    _state.update{it.copy(
-                        isError = true,
-                        error = result.error
-                    )}
+                    _state.update {
+                        it.copy(
+                            isError = true,
+                            error = result.error
+                        )
+                    }
                 }
             }
+        }.invokeOnCompletion {
+            _state.update { it.copy(isLoading = false) }
         }
     }
 
@@ -70,7 +75,7 @@ class HomeViewModel(
                 viewModelScope.launch {
                     val searchQuery = _state.value.searchQuery.replace(Regex("\\s+"), " ").trim()
 
-                    when (val result = tmdbApiService.search(searchQuery.replace(" ","%20"))) {
+                    when (val result = tmdbApiService.search(searchQuery.replace(" ", "%20"))) {
                         is Result.Success -> {
                             _state.update {
                                 it.copy(
@@ -84,10 +89,12 @@ class HomeViewModel(
                         }
 
                         is Result.Error -> {
-                            _state.update{it.copy(
-                                isError = true,
-                                error = result.error,
-                            )}
+                            _state.update {
+                                it.copy(
+                                    isError = true,
+                                    error = result.error,
+                                )
+                            }
                         }
                     }
 
@@ -96,12 +103,14 @@ class HomeViewModel(
             }
 
             HomeEvents.DisableSearchMode -> {
-                _state.update { it.copy(
-                    searchResults = emptyList(),
-                    searchQuery = "",
-                    inputedSearchQuery = null,
-                    searchMode = false
-                ) }
+                _state.update {
+                    it.copy(
+                        searchResults = emptyList(),
+                        searchQuery = "",
+                        inputedSearchQuery = null,
+                        searchMode = false
+                    )
+                }
             }
         }
     }
