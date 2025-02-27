@@ -26,6 +26,7 @@
     <string name="bookmarks_trending_movies_button">Explore Trending Movies</string>
     <string name="watch_providers_error_snackbar_message">Failed to fetch watch providers. Please restart the app and try again. If the error persists, contact support.</string>
     <string name="results_for">Results for "%1$s"</string>
+    <string name="no_results_for">No results for "%1$s"</string>
 
     <string name="oops_something_went_wrong">Oops! Something Went Wrong</string>
     <string name="we_couldnt_process_the_request_please_restart_and_try_again">We couldn't process the request. Please restart and try again.</string>

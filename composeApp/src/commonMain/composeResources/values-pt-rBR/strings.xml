@@ -26,6 +26,7 @@
     <string name="bookmarks_trending_movies_button">Explorar Filmes Populares</string>
     <string name="watch_providers_error_snackbar_message">Falha ao buscar provedores de exibição. Reinicie o aplicativo e tente novamente. Se o erro persistir, entre em contato com o suporte.</string>
     <string name="results_for">Resultados para "%1$s"</string>
+    <string name="no_results_for">Sem resultados para "%1$s"</string>
 
     <string name="oops_something_went_wrong">Oops! Algo deu errado</string>
     <string name="we_couldnt_process_the_request_please_restart_and_try_again">Não foi possível processar a solicitação. Reinicie e tente novamente.</string>

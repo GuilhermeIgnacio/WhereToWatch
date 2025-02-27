@@ -49,6 +49,7 @@ import com.guilherme.wheretowatch.presentation.viewmodel.HomeViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import wheretowatch.composeapp.generated.resources.Res
+import wheretowatch.composeapp.generated.resources.no_results_for
 import wheretowatch.composeapp.generated.resources.popular_movies
 import wheretowatch.composeapp.generated.resources.results_for
 import wheretowatch.composeapp.generated.resources.search_placeholder
@@ -130,12 +131,20 @@ fun HomeScreen(
 
                 item {
 
+                    /*val lorem = if(state.searchResults.isEmpty()) "No Results for" else stringResource(
+                        Res.string.results_for, state.inputedSearchQuery ?: ""
+                    )*/
+
+                    val searchResultsMessage = if (state.searchResults.isEmpty())
+                        stringResource(Res.string.no_results_for, state.inputedSearchQuery ?: "")
+                    else stringResource(
+                        Res.string.results_for, state.inputedSearchQuery ?: ""
+                    )
+
                     AnimatedContent(
                         targetState = if (!state.searchMode) stringResource(
                             Res.string.popular_movies
-                        ) else stringResource(
-                            Res.string.results_for, state.inputedSearchQuery ?: ""
-                        )
+                        ) else searchResultsMessage
                     ) { text ->
                         Text(
                             text = text,
