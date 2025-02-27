@@ -47,7 +47,8 @@ fun SetupNavGraph(
             composable<BookmarksScreen> {
                 BookmarksScreen(
                     onMovieClick = { navController.navigate(MovieDetailsScreen(it)) },
-                    onTvShowClicked = { navController.navigate(TvShowDetailsScreen(it)) }
+                    onTvShowClicked = { navController.navigate(TvShowDetailsScreen(it)) },
+                    onExploreTrendingMoviesClicked = { navController.navigate(HomeScreen) }
                 )
 
             }

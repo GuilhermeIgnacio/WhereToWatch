@@ -2,25 +2,31 @@ package com.guilherme.wheretowatch.presentation.screen.bookmarks
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.dropUnlessResumed
@@ -34,11 +40,14 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import wheretowatch.composeapp.generated.resources.Res
 import wheretowatch.composeapp.generated.resources.bookmarks
+import wheretowatch.composeapp.generated.resources.bookmarks_empty_message
+import wheretowatch.composeapp.generated.resources.bookmarks_trending_movies_button
 
 @Composable
 fun BookmarksScreen(
     onMovieClick: (Int) -> Unit,
     onTvShowClicked: (Int) -> Unit,
+    onExploreTrendingMoviesClicked: () -> Unit,
 ) {
 
     val viewModel = koinViewModel<BookmarksViewModel>()
@@ -67,37 +76,59 @@ fun BookmarksScreen(
 
         val bookmarks = state.bookmarks
 
-        items(bookmarks.chunked(2)) { rowItems ->
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                rowItems.forEach { media ->
-                    AsyncImage(
-                        modifier = Modifier
-                            .width(240.dp)
-                            .weight(1f)
-                            .clip(RoundedCornerShape(16.dp))
-                            .clickable(onClick = dropUnlessResumed {
-                                when (media.mediaType) {
-                                    MediaType.MOVIE.value -> onMovieClick(media.id)
-                                    MediaType.TV.value -> onTvShowClicked(media.id)
-                                    null -> onMovieClick(media.id)
-                                }
-                            }),
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data("https://image.tmdb.org/t/p/w500" + media.posterPath)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = "",
-                        contentScale = ContentScale.FillWidth,
-                        placeholder = painterResource(R.drawable.placeholder_image),
-                        error = painterResource(R.drawable.placeholder_image)
-                    )
-                }
+        if (bookmarks.isNotEmpty()) {
+            items(bookmarks.chunked(2)) { rowItems ->
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    rowItems.forEach { media ->
+                        AsyncImage(
+                            modifier = Modifier
+                                .width(240.dp)
+                                .weight(1f)
+                                .clip(RoundedCornerShape(16.dp))
+                                .clickable(onClick = dropUnlessResumed {
+                                    when (media.mediaType) {
+                                        MediaType.MOVIE.value -> onMovieClick(media.id)
+                                        MediaType.TV.value -> onTvShowClicked(media.id)
+                                        null -> onMovieClick(media.id)
+                                    }
+                                }),
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data("https://image.tmdb.org/t/p/w500" + media.posterPath)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = "",
+                            contentScale = ContentScale.FillWidth,
+                            placeholder = painterResource(R.drawable.placeholder_image),
+                            error = painterResource(R.drawable.placeholder_image)
+                        )
+                    }
 
-                if (rowItems.size < 2) {
-                    Spacer(modifier = Modifier.weight(1f))
+                    if (rowItems.size < 2) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+            }
+        } else {
+            item {
+                Box(modifier = Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
+                    Column(
+                        modifier = Modifier.padding(horizontal = 1.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.bookmarks_empty_message),
+                            textAlign = TextAlign.Center
+                        )
+                        Button(onClick = {
+                            onExploreTrendingMoviesClicked()
+                        }) {
+                            Text(text = stringResource(Res.string.bookmarks_trending_movies_button))
+                        }
+                    }
                 }
             }
         }

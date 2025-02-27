@@ -22,6 +22,8 @@
     <string name="remove_bookmark_content_description">Remover da minha lista</string>
     <string name="bookmark_movie_content_description">Adicionar à minha lista</string>
     <string name="bookmarks">Minha Lista</string>
+    <string name="bookmarks_empty_message">Parece que está vazio por aqui... Salve seus filmes e séries favoritos!</string>
+    <string name="bookmarks_trending_movies_button">Explorar Filmes Populares</string>
     <string name="watch_providers_error_snackbar_message">Falha ao buscar provedores de exibição. Reinicie o aplicativo e tente novamente. Se o erro persistir, entre em contato com o suporte.</string>
     <string name="results_for">Resultados para "%1$s"</string>
 

@@ -22,6 +22,8 @@
     <string name="remove_bookmark_content_description">Remove bookmark</string>
     <string name="bookmark_movie_content_description">Bookmark movie</string>
     <string name="bookmarks">Bookmarks</string>
+    <string name="bookmarks_empty_message">Looking a bit empty... Start saving your favorite Movies and Tv Shows!</string>
+    <string name="bookmarks_trending_movies_button">Explore Trending Movies</string>
     <string name="watch_providers_error_snackbar_message">Failed to fetch watch providers. Please restart the app and try again. If the error persists, contact support.</string>
     <string name="results_for">Results for "%1$s"</string>
 
